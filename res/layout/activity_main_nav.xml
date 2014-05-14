@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment android:name="com.casapp.NavFragment"
+            android:id="@+id/list"
+            android:layout_weight="1"
+            android:layout_height="0dip"
+    />
+</LinearLayout>
+
