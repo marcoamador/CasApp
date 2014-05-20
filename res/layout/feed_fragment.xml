@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+   android:id="@+id/page_buttons"
+   android:orientation="horizontal"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:gravity="center_horizontal"
+
+   >
+   
+   <RadioGroup
+    android:id="@+id/rdogrp"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <RadioButton
+        android:id="@+id/viewFeed"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/view_feed_selector"
+        android:layout_weight="1"
+        android:button="@null"
+        android:checked="true"
+        android:text="View Feed"
+        android:maxLines="1"
+        android:textSize="12dp"
+        android:gravity="center" />
+
+    <RadioButton
+        android:id="@+id/selectFeed"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/select_feed_selector"
+        android:button="@null"
+        android:text="Select Feeds"
+        android:maxLines="1"
+        android:textSize="12dp"
+        android:gravity="center" />
+
+    <RadioButton
+        android:id="@+id/receiveFeed"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/receive_feed_selector"
+        android:button="@null"
+        android:text="Receive New Feed"
+        android:maxLines="1"
+        android:textSize="12dp"
+        android:gravity="center" />
+
+</RadioGroup>
+
+</LinearLayout>
+
+    
+</LinearLayout>
+

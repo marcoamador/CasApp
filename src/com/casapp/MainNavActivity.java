@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.widget.Toast;
 
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TabPageIndicator;
@@ -16,7 +18,11 @@ public class MainNavActivity extends FragmentActivity{
         R.drawable.perm_group_comment,
         R.drawable.perm_group_trips,
         R.drawable.perm_group_profile,
-};
+	};
+	
+	private static final String[] FEED_CONTENT = new String[] {"News Feed", "Selected Feeds", "Receive New Feed"};
+	
+	 FragmentPagerAdapter adapterViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@ public class MainNavActivity extends FragmentActivity{
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.indicator);
         indicator.setViewPager(pager);
+        
 	}
 		
 	class GoogleMusicAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
@@ -42,7 +49,19 @@ public class MainNavActivity extends FragmentActivity{
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return NavFragment.newInstance(CONTENT[position % CONTENT.length]);
+        	switch(position){
+        	case 0:
+        		return FeedFragment.newInstance(1, "cenas");
+        	case 1:
+        		return NavFragment.newInstance(CONTENT[position % CONTENT.length]);
+        	case 2:
+        		return NavFragment.newInstance(CONTENT[position % CONTENT.length]);
+        	case 3:
+        		return NavFragment.newInstance(CONTENT[position % CONTENT.length]);
+        	default:
+        		return null;
+        	}
+            
         }
 
         @Override

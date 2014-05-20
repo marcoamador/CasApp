@@ -349,37 +349,47 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_top_padding=0x7f08000c;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int perm_group_calendar_normal=0x7f020001;
-        public static final int perm_group_calendar_selected=0x7f020002;
-        public static final int perm_group_camera_normal=0x7f020003;
-        public static final int perm_group_camera_selected=0x7f020004;
-        public static final int perm_group_comment=0x7f020005;
-        public static final int perm_group_device_alarms_normal=0x7f020006;
-        public static final int perm_group_device_alarms_selected=0x7f020007;
-        public static final int perm_group_feed=0x7f020008;
-        public static final int perm_group_location_normal=0x7f020009;
-        public static final int perm_group_location_selected=0x7f02000a;
-        public static final int perm_group_profile=0x7f02000b;
-        public static final int perm_group_trips=0x7f02000c;
-        public static final int vpi__tab_indicator=0x7f02000d;
-        public static final int vpi__tab_selected_focused_holo=0x7f02000e;
-        public static final int vpi__tab_selected_holo=0x7f02000f;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020010;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020011;
-        public static final int vpi__tab_unselected_holo=0x7f020012;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020013;
+        public static final int button_selected=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int perm_group_calendar_normal=0x7f020002;
+        public static final int perm_group_calendar_selected=0x7f020003;
+        public static final int perm_group_camera_normal=0x7f020004;
+        public static final int perm_group_camera_selected=0x7f020005;
+        public static final int perm_group_comment=0x7f020006;
+        public static final int perm_group_device_alarms_normal=0x7f020007;
+        public static final int perm_group_device_alarms_selected=0x7f020008;
+        public static final int perm_group_feed=0x7f020009;
+        public static final int perm_group_location_normal=0x7f02000a;
+        public static final int perm_group_location_selected=0x7f02000b;
+        public static final int perm_group_profile=0x7f02000c;
+        public static final int perm_group_trips=0x7f02000d;
+        public static final int receive_feed_selector=0x7f02000e;
+        public static final int select_feed_selector=0x7f02000f;
+        public static final int view_feed_selector=0x7f020010;
+        public static final int vpi__tab_indicator=0x7f020011;
+        public static final int vpi__tab_selected_focused_holo=0x7f020012;
+        public static final int vpi__tab_selected_holo=0x7f020013;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020014;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020015;
+        public static final int vpi__tab_unselected_holo=0x7f020016;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f020017;
     }
     public static final class id {
-        public static final int action_settings=0x7f040008;
+        public static final int action_settings=0x7f04000e;
         public static final int bottom=0x7f040003;
-        public static final int indicator=0x7f040006;
-        public static final int list=0x7f040005;
+        public static final int indicator=0x7f04000c;
+        public static final int nextButton=0x7f040007;
         public static final int none=0x7f040000;
-        public static final int pager=0x7f040007;
+        public static final int page_buttons=0x7f040005;
+        public static final int pager=0x7f04000d;
+        public static final int prevButton=0x7f040006;
+        public static final int rdogrp=0x7f040008;
+        public static final int receiveFeed=0x7f04000b;
+        public static final int selectFeed=0x7f04000a;
         public static final int top=0x7f040004;
         public static final int triangle=0x7f040001;
         public static final int underline=0x7f040002;
+        public static final int viewFeed=0x7f040009;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f070000;
@@ -389,9 +399,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_underline_indicator_fade_length=0x7f070004;
     }
     public static final class layout {
-        public static final int activity_main_nav=0x7f030000;
-        public static final int fragment_main_nav=0x7f030001;
-        public static final int simple_underlines=0x7f030002;
+        public static final int add_feed_fragment=0x7f030000;
+        public static final int current_feeds_fragment=0x7f030001;
+        public static final int feed_buttons=0x7f030002;
+        public static final int feed_fragment=0x7f030003;
+        public static final int fragment_main_nav=0x7f030004;
     }
     public static final class menu {
         public static final int feed=0x7f0b0000;
@@ -417,19 +429,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             backward-compatibility can go here.
         
 
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     
- API 14 theme customizations can go here. 
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f090005;
         /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f090006;
