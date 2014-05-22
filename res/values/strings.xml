@@ -6,6 +6,20 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_login">Login</string>
+    
+    <string name="feed_check">View Feed</string>
+    <string name="feed_select">Select Feeds</string>
+    <string name="feed_add">Receive New Feed</string>
+    
+    <string name="trips_favourites">Favourites</string>
+    <string name="trips_schedule">Schedule</string>
+    
+    <string name="profile_points">Points:</string>
+    <string name="profile_privacy">Privacy Settings</string>
+    <string name="profile_rewards">Claim Rewards</string>
+    <string name="profile_desc">Profile Photo</string>
     <string name="title_activity_main_nav">MainNavActivity</string>
     <string name="hello_world">Hello world!</string>
 

@@ -350,42 +350,60 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int button_selected=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int perm_group_calendar_normal=0x7f020002;
-        public static final int perm_group_calendar_selected=0x7f020003;
-        public static final int perm_group_camera_normal=0x7f020004;
-        public static final int perm_group_camera_selected=0x7f020005;
-        public static final int perm_group_comment=0x7f020006;
-        public static final int perm_group_device_alarms_normal=0x7f020007;
-        public static final int perm_group_device_alarms_selected=0x7f020008;
-        public static final int perm_group_feed=0x7f020009;
-        public static final int perm_group_location_normal=0x7f02000a;
-        public static final int perm_group_location_selected=0x7f02000b;
-        public static final int perm_group_profile=0x7f02000c;
-        public static final int perm_group_trips=0x7f02000d;
-        public static final int receive_feed_selector=0x7f02000e;
-        public static final int select_feed_selector=0x7f02000f;
-        public static final int view_feed_selector=0x7f020010;
-        public static final int vpi__tab_indicator=0x7f020011;
-        public static final int vpi__tab_selected_focused_holo=0x7f020012;
-        public static final int vpi__tab_selected_holo=0x7f020013;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020014;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020015;
-        public static final int vpi__tab_unselected_holo=0x7f020016;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020017;
+        public static final int claim_rewards_selector=0x7f020001;
+        public static final int favourites_selector=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int perm_group_calendar_normal=0x7f020004;
+        public static final int perm_group_calendar_selected=0x7f020005;
+        public static final int perm_group_camera_normal=0x7f020006;
+        public static final int perm_group_camera_selected=0x7f020007;
+        public static final int perm_group_comment=0x7f020008;
+        public static final int perm_group_device_alarms_normal=0x7f020009;
+        public static final int perm_group_device_alarms_selected=0x7f02000a;
+        public static final int perm_group_feed=0x7f02000b;
+        public static final int perm_group_location_normal=0x7f02000c;
+        public static final int perm_group_location_selected=0x7f02000d;
+        public static final int perm_group_profile=0x7f02000e;
+        public static final int perm_group_trips=0x7f02000f;
+        public static final int privacy_settings_selector=0x7f020010;
+        public static final int receive_feed_selector=0x7f020011;
+        public static final int schedule_selector=0x7f020012;
+        public static final int select_feed_selector=0x7f020013;
+        public static final int view_feed_selector=0x7f020014;
+        public static final int vpi__tab_indicator=0x7f020015;
+        public static final int vpi__tab_selected_focused_holo=0x7f020016;
+        public static final int vpi__tab_selected_holo=0x7f020017;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020018;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020019;
+        public static final int vpi__tab_unselected_holo=0x7f02001a;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02001b;
     }
     public static final class id {
-        public static final int action_settings=0x7f04000e;
+        public static final int action_login=0x7f04001c;
+        public static final int action_logout=0x7f04001b;
+        public static final int action_settings=0x7f04001a;
         public static final int bottom=0x7f040003;
-        public static final int indicator=0x7f04000c;
+        public static final int claimRewards=0x7f040014;
+        public static final int favourites=0x7f040016;
+        public static final int favouritesFrame=0x7f040018;
+        public static final int feedFrame=0x7f04000c;
+        public static final int indicator=0x7f04000f;
         public static final int nextButton=0x7f040007;
         public static final int none=0x7f040000;
         public static final int page_buttons=0x7f040005;
-        public static final int pager=0x7f04000d;
+        public static final int pager=0x7f040010;
         public static final int prevButton=0x7f040006;
+        public static final int privacySettings=0x7f040013;
+        public static final int profilePhoto=0x7f040011;
         public static final int rdogrp=0x7f040008;
+        public static final int rdogrp_profile=0x7f040012;
+        public static final int rdogrp_trips=0x7f040015;
         public static final int receiveFeed=0x7f04000b;
+        public static final int receiveFeedFrame=0x7f04000e;
+        public static final int schedule=0x7f040017;
+        public static final int scheduleFrame=0x7f040019;
         public static final int selectFeed=0x7f04000a;
+        public static final int selectFeedFrame=0x7f04000d;
         public static final int top=0x7f040004;
         public static final int triangle=0x7f040001;
         public static final int underline=0x7f040002;
@@ -404,19 +422,33 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int feed_buttons=0x7f030002;
         public static final int feed_fragment=0x7f030003;
         public static final int fragment_main_nav=0x7f030004;
+        public static final int profile_fragment=0x7f030005;
+        public static final int trips_fragment=0x7f030006;
     }
     public static final class menu {
         public static final int feed=0x7f0b0000;
-        public static final int main_nav=0x7f0b0001;
+        public static final int main_activity_actions=0x7f0b0001;
+        public static final int main_nav=0x7f0b0002;
     }
     public static final class string {
+        public static final int action_login=0x7f0a0006;
+        public static final int action_logout=0x7f0a0005;
         public static final int action_settings=0x7f0a0004;
         public static final int app_name=0x7f0a0000;
-        public static final int hello_world=0x7f0a0006;
-        public static final int title_activity_main_nav=0x7f0a0005;
+        public static final int feed_add=0x7f0a0009;
+        public static final int feed_check=0x7f0a0007;
+        public static final int feed_select=0x7f0a0008;
+        public static final int hello_world=0x7f0a0011;
+        public static final int profile_desc=0x7f0a000f;
+        public static final int profile_points=0x7f0a000c;
+        public static final int profile_privacy=0x7f0a000d;
+        public static final int profile_rewards=0x7f0a000e;
+        public static final int title_activity_main_nav=0x7f0a0010;
         public static final int title_section1=0x7f0a0001;
         public static final int title_section2=0x7f0a0002;
         public static final int title_section3=0x7f0a0003;
+        public static final int trips_favourites=0x7f0a000a;
+        public static final int trips_schedule=0x7f0a000b;
     }
     public static final class style {
         /** 

@@ -4,57 +4,45 @@
    android:layout_width="fill_parent"
    android:layout_height="wrap_content"
    android:gravity="center_horizontal"
+
    >
    
    <RadioGroup
-    android:id="@+id/rdogrp"
+    android:id="@+id/rdogrp_trips"
     android:layout_width="fill_parent"
     android:layout_height="40dp"
     android:gravity="center"
     android:orientation="horizontal" >
 
     <RadioButton
-        android:id="@+id/viewFeed"
+        android:id="@+id/favourites"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="@drawable/view_feed_selector"
+        android:background="@drawable/favourites_selector"
         android:layout_weight="1"
         android:button="@null"
         android:checked="true"
-        android:text="@string/feed_check"
+        android:text="@string/trips_favourites"
         android:maxLines="1"
         android:textSize="12sp"
         android:gravity="center" />
 
     <RadioButton
-        android:id="@+id/selectFeed"
+        android:id="@+id/schedule"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:background="@drawable/select_feed_selector"
+        android:background="@drawable/schedule_selector"
         android:button="@null"
-        android:text="@string/feed_select"
+        android:text="@string/trips_schedule"
         android:maxLines="1"
         android:textSize="12sp"
         android:gravity="center" />
 
-    <RadioButton
-        android:id="@+id/receiveFeed"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:background="@drawable/receive_feed_selector"
-        android:button="@null"
-        android:text="@string/feed_add"
-        android:maxLines="1"
-        android:textSize="12sp"
-        android:gravity="center" />
+</RadioGroup>
 
-	</RadioGroup>
-
-   <FrameLayout android:id="@+id/feedFrame"></FrameLayout>
-   <FrameLayout android:id="@+id/selectFeedFrame"></FrameLayout>
-   <FrameLayout android:id="@+id/receiveFeedFrame"></FrameLayout>
+   <FrameLayout android:id="@+id/favouritesFrame"></FrameLayout>
+   <FrameLayout android:id="@+id/scheduleFrame"></FrameLayout>
 
 </LinearLayout>
 

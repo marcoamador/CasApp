@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="160dp">
+
+        <ImageView
+            android:id="@+id/profilePhoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/button_selected"
+            android:contentDescription="@string/profile_desc" />
+        
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="fill_parent"></LinearLayout>
+        
+    </LinearLayout>
+    
+    <RadioGroup
+    android:id="@+id/rdogrp_profile"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <RadioButton
+        android:id="@+id/privacySettings"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/privacy_settings_selector"
+        android:layout_weight="1"
+        android:button="@null"
+        android:checked="true"
+        android:text="@string/profile_privacy"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:gravity="center" />
+
+    <RadioButton
+        android:id="@+id/claimRewards"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/claim_rewards_selector"
+        android:button="@null"
+        android:text="@string/profile_rewards"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:gravity="center" />
+
+
+</RadioGroup>
+
+    
+</LinearLayout>
+

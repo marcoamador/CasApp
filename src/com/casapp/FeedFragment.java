@@ -68,6 +68,8 @@ public class FeedFragment extends Fragment{
 					receiveFeed.setChecked(false);
 				}
 			});
+	        
+	        
 	        //TextView tvLabel = (TextView) view.findViewById(R.id.);
 	        //tvLabel.setText(page + " -- " + title);
 	        return view;
