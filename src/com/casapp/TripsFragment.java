@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 public class TripsFragment extends Fragment{
 
@@ -30,7 +29,6 @@ public class TripsFragment extends Fragment{
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        View view = inflater.inflate(R.layout.trips_fragment, container, false);
 	        
-	        RadioGroup radio = (RadioGroup) view.findViewById(R.id.rdogrp_trips);
 	        final RadioButton favourites = (RadioButton) view.findViewById(R.id.favourites);
 	        final RadioButton schedule = (RadioButton) view.findViewById(R.id.schedule);
 	        
@@ -43,8 +41,7 @@ public class TripsFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					favourites.setChecked(true);
-					schedule.setChecked(false);
+					
 				}
 			});
 	        
@@ -53,8 +50,7 @@ public class TripsFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					favourites.setChecked(false);
-					schedule.setChecked(true);
+					
 				}
 			});
 	        

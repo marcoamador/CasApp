@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class NavFragment extends Fragment{
 	private static final String KEY_CONTENT = "NavFragment:Content";

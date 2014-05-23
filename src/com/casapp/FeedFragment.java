@@ -52,9 +52,7 @@ public class FeedFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					viewFeed.setChecked(true);
-					selectFeed.setChecked(false);
-					receiveFeed.setChecked(false);
+					
 				}
 			});
 	        
@@ -63,9 +61,7 @@ public class FeedFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					viewFeed.setChecked(false);
-					selectFeed.setChecked(true);
-					receiveFeed.setChecked(false);
+					
 				}
 			});
 	        

@@ -2,5 +2,5 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/button_selected" android:state_checked="true"  />
-    <item android:drawable="@android:color/transparent" android:state_checked="false"/>
+    <item android:drawable="@drawable/vpi__tab_unselected_holo" android:state_checked="false"/>
 </selector>

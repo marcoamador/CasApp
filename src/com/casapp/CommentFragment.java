@@ -5,34 +5,35 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.View.OnClickListener;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-public class AddFeedFragment extends Fragment{
+public class CommentFragment extends Fragment{
 	 private String title;
 	    private int page;
 
 	    // newInstance constructor for creating fragment with arguments
-	    public static AddFeedFragment newInstance(int page, String title) {
-	    	AddFeedFragment fragmentFirst = new AddFeedFragment();
+	    public static CommentFragment newInstance() {
+	    	CommentFragment commentFragment = new CommentFragment();
 	        Bundle args = new Bundle();
-	        args.putInt("someInt", page);
-	        args.putString("someTitle", title);
-	        fragmentFirst.setArguments(args);
-	        return fragmentFirst;
+	        commentFragment.setArguments(args);
+	        return commentFragment;
 	    }
 
 	    // Store instance variables based on arguments passed
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        page = getArguments().getInt("someInt", 0);
-	        title = getArguments().getString("someTitle");
+	        
 	    }
 
 	    // Inflate the view for the fragment based on layout XML
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	        View view = inflater.inflate(R.layout.add_feed_fragment, container, false);
+	        View view = inflater.inflate(R.layout.feed_fragment, container, false);
+	        
+	        
 	        //TextView tvLabel = (TextView) view.findViewById(R.id.);
 	        //tvLabel.setText(page + " -- " + title);
 	        return view;

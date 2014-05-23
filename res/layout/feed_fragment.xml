@@ -21,6 +21,7 @@
         android:layout_weight="1"
         android:button="@null"
         android:checked="true"
+        android:textStyle="bold"
         android:text="@string/feed_check"
         android:maxLines="1"
         android:textSize="12sp"
@@ -32,6 +33,7 @@
         android:layout_height="40dp"
         android:layout_weight="1"
         android:background="@drawable/select_feed_selector"
+        android:textStyle="bold"
         android:button="@null"
         android:text="@string/feed_select"
         android:maxLines="1"
@@ -44,6 +46,7 @@
         android:layout_height="40dp"
         android:layout_weight="1"
         android:background="@drawable/receive_feed_selector"
+        android:textStyle="bold" 
         android:button="@null"
         android:text="@string/feed_add"
         android:maxLines="1"
@@ -52,9 +55,26 @@
 
 	</RadioGroup>
 
-   <FrameLayout android:id="@+id/feedFrame"></FrameLayout>
-   <FrameLayout android:id="@+id/selectFeedFrame"></FrameLayout>
-   <FrameLayout android:id="@+id/receiveFeedFrame"></FrameLayout>
+   <FrameLayout
+       android:id="@+id/feedFrame"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" >
+
+</FrameLayout>
+
+   <FrameLayout
+       android:id="@+id/selectFeedFrame"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" >
+
+</FrameLayout>
+
+   <FrameLayout
+       android:id="@+id/receiveFeedFrame"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" >
+
+</FrameLayout>
 
 </LinearLayout>
 

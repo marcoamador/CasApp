@@ -12,22 +12,32 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme"
-        >
+        android:theme="@style/AppBaseTheme" >
         <activity
             android:name="com.casapp.FeedActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            
             android:name="com.casapp.MainNavActivity"
             android:label="@string/title_activity_main_nav" >
-            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.casapp.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.casapp.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.casapp.RegisterActivity"
+            android:label="@string/title_activity_register" >
         </activity>
     </application>
 

@@ -22,9 +22,10 @@
         android:layout_weight="1"
         android:button="@null"
         android:checked="true"
+        android:textStyle="bold"
         android:text="@string/trips_favourites"
         android:maxLines="1"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="center" />
 
     <RadioButton
@@ -33,16 +34,28 @@
         android:layout_height="40dp"
         android:layout_weight="1"
         android:background="@drawable/schedule_selector"
+        android:textStyle="bold"
         android:button="@null"
         android:text="@string/trips_schedule"
         android:maxLines="1"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="center" />
 
 </RadioGroup>
 
-   <FrameLayout android:id="@+id/favouritesFrame"></FrameLayout>
-   <FrameLayout android:id="@+id/scheduleFrame"></FrameLayout>
+   <FrameLayout
+       android:id="@+id/favouritesFrame"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" >
+
+</FrameLayout>
+
+   <FrameLayout
+       android:id="@+id/scheduleFrame"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" >
+
+</FrameLayout>
 
 </LinearLayout>
 
