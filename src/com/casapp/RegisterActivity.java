@@ -1,7 +1,5 @@
 package com.casapp;
 
-import com.casapp.LoginActivity.UserLoginTask;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -13,22 +11,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class RegisterActivity extends FragmentActivity {
 	
-	//private RegisterLoginTask mAuthTask = null;
+	private UserRegisterTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mUsername;
 	private String mPassword;
 	private String mName;
-	private String mPassConf;
+	private String mPasswordConf;
 
 	// UI references.
 	private EditText mEmailView;
@@ -51,6 +47,16 @@ public class RegisterActivity extends FragmentActivity {
 		actionBar.setTitle("CasApp");
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 		
+		mRegisterFormView = findViewById(R.id.register_form);
+		mRegisterStatusView = findViewById(R.id.register_status);
+		mRegisterStatusMessageView = (TextView) findViewById(R.id.register_status_message);
+		
+		mEmailView = (EditText) findViewById(R.id.emailRegister);
+		mNameView = (EditText) findViewById(R.id.nameRegister);
+		mUsernameView = (EditText) findViewById(R.id.usernameRegister);
+		mPasswordView = (EditText) findViewById(R.id.passwordRegister);
+		mPasswordConfView = (EditText) findViewById(R.id.passwordConfirmation);
+		
 		findViewById(R.id.register_account_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -62,7 +68,7 @@ public class RegisterActivity extends FragmentActivity {
 
 	protected void attemptRegister() {
 		// TODO Auto-generated method stub
-		/*
+		
 		 if (mAuthTask != null) {
 			return;
 		}
@@ -70,24 +76,20 @@ public class RegisterActivity extends FragmentActivity {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
+		mPasswordConfView.setError(null);
+		mUsernameView.setError(null);
+		mNameView.setError(null);
 
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
+		mPasswordConf = mPasswordConfView.getText().toString();
+		mName = mNameView.getText().toString();
+		mUsername = mUsernameView.getText().toString();
+		
 
 		boolean cancel = false;
 		View focusView = null;
-
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
-		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
@@ -99,7 +101,53 @@ public class RegisterActivity extends FragmentActivity {
 			focusView = mEmailView;
 			cancel = true;
 		}
-
+		
+		if (TextUtils.isEmpty(mUsername)) {
+			mUsernameView.setError(getString(R.string.error_field_required));
+			focusView = mUsernameView;
+			cancel = true;
+		} else if (mUsername.length() < 4) {
+			mUsernameView.setError(getString(R.string.error_username_short));
+			focusView = mUsernameView;
+			cancel = true;
+		}
+		
+		if (TextUtils.isEmpty(mName)) {
+			mNameView.setError(getString(R.string.error_field_required));
+			focusView = mNameView;
+			cancel = true;
+		} else if (mName.length() < 4) {
+			mNameView.setError(getString(R.string.error_name_short));
+			focusView = mNameView;
+			cancel = true;
+		}
+		
+		// Check for a valid password.
+		if (TextUtils.isEmpty(mPassword)) {
+			mPasswordView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			cancel = true;
+		} else if (mPassword.length() < 4) {
+			mPasswordView.setError(getString(R.string.error_invalid_password));
+			focusView = mPasswordView;
+			cancel = true;
+		}
+		
+		// Check for a valid password.
+		if (TextUtils.isEmpty(mPasswordConf)) {
+			mPasswordConfView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordConfView;
+			cancel = true;
+		} else if (mPasswordConf.length() < 4) {
+			mPasswordConfView.setError(getString(R.string.error_invalid_password));
+			focusView = mPasswordConfView;
+			cancel = true;
+		} else if (!mPasswordConf.equals(mPassword)){
+			mPasswordConfView.setError(getString(R.string.error_invalid_confirmation));
+			focusView = mPasswordConfView;
+			cancel = true;
+		}
+	
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
@@ -107,19 +155,18 @@ public class RegisterActivity extends FragmentActivity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mRegisterStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
+			mAuthTask = new UserRegisterTask();
 			mAuthTask.execute((Void) null);
 		}
-		 */
 	}
 	
 	
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
-	/*@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
@@ -128,43 +175,36 @@ public class RegisterActivity extends FragmentActivity {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
+			mRegisterStatusView.setVisibility(View.VISIBLE);
+			mRegisterStatusView.animate().setDuration(shortAnimTime)
 					.alpha(show ? 1 : 0)
 					.setListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
+							mRegisterStatusView.setVisibility(show ? View.VISIBLE
 									: View.GONE);
 						}
 					});
 
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
+			mRegisterFormView.setVisibility(View.VISIBLE);
+			mRegisterFormView.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
+							mRegisterFormView.setVisibility(show ? View.GONE
 									: View.VISIBLE);
 						}
 					});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+			mRegisterStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+			mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
-	}*/
+	}
 	
-	
-	
-	
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	/*public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO: attempt authentication against a network service.
@@ -176,13 +216,10 @@ public class RegisterActivity extends FragmentActivity {
 				return false;
 			}
 
-			}
-
 			// TODO: register the new account here.
 			return true;
 		}
 
-		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
@@ -202,5 +239,8 @@ public class RegisterActivity extends FragmentActivity {
 			mAuthTask = null;
 			showProgress(false);
 		}
-	}*/
+	}	
+	
 }
+
+

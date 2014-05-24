@@ -22,6 +22,10 @@
     <string name="prompt_username">Desired Username</string>
     <string name="register_progress_signing_in">Creating Account</string>
     
+    <string name="error_invalid_confirmation">Passwords don\'t match.</string>
+    <string name="error_name_short">Name is too short.</string>
+    <string name="error_username_short">Username is too short.</string>
+    
     
     <string name="feed_check">View Feed</string>
     <string name="feed_select">Select Feeds</string>
