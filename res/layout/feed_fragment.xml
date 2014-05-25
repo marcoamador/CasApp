@@ -1,80 +1,217 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:id="@+id/page_buttons"
-   android:orientation="horizontal"
-   android:layout_width="fill_parent"
-   android:layout_height="wrap_content"
-   android:gravity="center_horizontal"
-   >
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:weightSum="2">
+	   
+	   <RadioGroup
+	    android:id="@+id/rdogrp"
+	    android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	    android:gravity="center"
+	    android:orientation="horizontal" >
+	
+	    <RadioButton
+	        android:id="@+id/viewFeed"
+	        android:layout_width="fill_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/view_feed_selector"
+	        android:layout_weight="1"
+	        android:button="@null"
+	        android:checked="true"
+	        android:textStyle="bold"
+	        android:text="@string/feed_check"
+	        android:maxLines="1"
+	        android:textSize="12sp"
+	        android:gravity="center" />
+	
+	    <RadioButton
+	        android:id="@+id/selectFeed"
+	        android:layout_width="fill_parent"
+	        android:layout_height="40dp"
+	        android:layout_weight="1"
+	        android:background="@drawable/select_feed_selector"
+	        android:textStyle="bold"
+	        android:button="@null"
+	        android:text="@string/feed_select"
+	        android:maxLines="1"
+	        android:textSize="12sp"
+	        android:gravity="center" />
+	
+	    <RadioButton
+	        android:id="@+id/receiveFeed"
+	        android:layout_width="fill_parent"
+	        android:layout_height="40dp"
+	        android:layout_weight="1"
+	        android:background="@drawable/receive_feed_selector"
+	        android:textStyle="bold" 
+	        android:button="@null"
+	        android:text="@string/feed_add"
+	        android:maxLines="1"
+	        android:textSize="12sp"
+	        android:gravity="center" />
+	
+		</RadioGroup>
+		
+	   
+   <LinearLayout android:id="@+id/gpsResultsFrame"
+       android:orientation="vertical"
+       
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+       <TextView 
+        android:id="@+id/header_label"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/check_in_gps" />
+    
+		<ListView
+		    android:id="@+id/list"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dip"
+		    android:layout_weight="1"
+		    android:cacheColorHint="@android:color/transparent"
+		    android:choiceMode="multipleChoice" />
+		
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="0dip"
+		    android:layout_weight="0.20"
+		    android:gravity="center|bottom"
+		    android:orientation="vertical" >
+
+		    <Button
+		        android:id="@+id/gpsResultsAddFeed"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:background="@drawable/button_selected"
+		        android:drawableLeft="@drawable/plus"
+		        android:drawablePadding="-50dp"
+		        android:paddingLeft="60dip"
+		        android:text="@string/feed_gpsResultsAdd"
+		        android:textSize="16sp"
+		        android:textStyle="bold" >
+		    </Button>
+		</LinearLayout>
    
-   <RadioGroup
-    android:id="@+id/rdogrp"
-    android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:orientation="horizontal" >
-
-    <RadioButton
-        android:id="@+id/viewFeed"
+   </LinearLayout>
+		
+   <LinearLayout 
+       android:orientation="vertical"
+       android:id="@+id/receiveFeedFrame"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent" >
+    
+        <TextView
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/view_feed_selector"
-        android:layout_weight="1"
-        android:button="@null"
-        android:checked="true"
-        android:textStyle="bold"
-        android:text="@string/feed_check"
-        android:maxLines="1"
-        android:textSize="12sp"
-        android:gravity="center" />
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:maxLines="3"
+        android:text="@string/add_feed_find"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textSize="16sp" >
+    </TextView>
+    
+    <Button
+       android:id="@+id/AddFeedUseLocation"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:layout_marginLeft="40dp"
+       android:layout_marginRight="40dp"
+       android:layout_marginTop="30dp"
+       android:background="@drawable/button_selected"
+       android:drawableLeft="@drawable/perm_group_location_normal"
+       android:drawablePadding="-30dp"
+       android:paddingLeft="20dip"
+       android:textStyle="bold"
+       android:textSize="15sp"
+       android:gravity="center"
+       android:text="@string/add_feed_location" />
+    
+     <Button
+       android:id="@+id/AddFeedManual"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:layout_marginLeft="40dp"
+       android:layout_marginRight="40dp"
+       android:layout_marginTop="80dp"
+       android:background="@drawable/button_selected"
+       android:textStyle="bold"
+       android:textSize="15sp"
+       android:drawableLeft="@drawable/search2"
+       android:paddingLeft="20dip"
+       android:gravity="center"
+       android:text="@string/add_feed_manually" />
 
-    <RadioButton
-        android:id="@+id/selectFeed"
+	</LinearLayout>
+	
+   <LinearLayout android:id="@+id/noFeedsSelected"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:background="@drawable/select_feed_selector"
-        android:textStyle="bold"
-        android:button="@null"
-        android:text="@string/feed_select"
-        android:maxLines="1"
-        android:textSize="12sp"
-        android:gravity="center" />
+        android:layout_height="350dp"
+        android:gravity="center"
+        android:maxLines="3"
+        android:text="@string/no_feeds_selected"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textSize="16sp" >
 
-    <RadioButton
-        android:id="@+id/receiveFeed"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:background="@drawable/receive_feed_selector"
-        android:textStyle="bold" 
-        android:button="@null"
-        android:text="@string/feed_add"
-        android:maxLines="1"
-        android:textSize="12sp"
-        android:gravity="center" />
+    </TextView>  
 
-	</RadioGroup>
+	</LinearLayout>
 
-   <FrameLayout
+   <LinearLayout 
        android:id="@+id/feedFrame"
+       android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="wrap_content" >
 
-</FrameLayout>
+   </LinearLayout>
 
-   <FrameLayout
+   <LinearLayout 
        android:id="@+id/selectFeedFrame"
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content" >
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
 
-</FrameLayout>
+   </LinearLayout>
+   
+   
+   
+   <LinearLayout android:id="@+id/AddFeedManuallyFrame"
+       android:orientation="vertical"
+       android:visibility="gone"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+       <TextView    
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:text="addfeedmanual"></TextView>
+   </LinearLayout>
+   
+   <LinearLayout android:id="@+id/FeedResultsFrame"
+       android:orientation="vertical"
+       android:visibility="gone"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+       
+       <TextView    
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:text="feedResults"></TextView>
+   </LinearLayout>
 
-   <FrameLayout
-       android:id="@+id/receiveFeedFrame"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" >
-
-</FrameLayout>
 
 </LinearLayout>
 

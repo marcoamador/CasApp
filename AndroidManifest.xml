@@ -3,6 +3,12 @@
     package="com.casapp"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -38,6 +44,14 @@
         <activity
             android:name="com.casapp.RegisterActivity"
             android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.casapp.AddFeedByGpsActivity"
+            android:label="@string/title_activity_add_feed_by_gps" >
+        </activity>
+        <activity
+            android:name="com.casapp.AddFeedManuallyActivity"
+            android:label="@string/title_activity_add_feed_manually" >
         </activity>
     </application>
 

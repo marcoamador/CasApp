@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="80dip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3.7" >
+        
+        <TextView
+            android:id="@+id/origin"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1.50"
+            android:gravity="center_vertical|right"
+            android:text="@string/origin"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+        
+        <TextView
+            android:id="@+id/separator"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/separator"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+        
+        <TextView 
+        android:id="@+id/destination"
+        android:text="@string/destination"
+        android:layout_weight="1.5"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_marginLeft="15dp"
+        android:layout_height="fill_parent"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical|left"
+        />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="right"
+            android:text=""
+            android:layout_marginLeft="50dp" />
+         
+    </LinearLayout>
+

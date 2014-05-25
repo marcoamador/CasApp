@@ -17,19 +17,28 @@
     <string name="password_label">Password</string>
     <string name="email_label">E-mail Address</string>
     <string name="passwordconf_label">Password Confirmation</string>
-    
     <string name="prompt_name">First and last name</string>
     <string name="prompt_username">Desired Username</string>
     <string name="register_progress_signing_in">Creating Account</string>
-    
     <string name="error_invalid_confirmation">Passwords don\'t match.</string>
     <string name="error_name_short">Name is too short.</string>
     <string name="error_username_short">Username is too short.</string>
-    
-    
+    <!-- FEED FRAGMENT -->
     <string name="feed_check">View Feed</string>
     <string name="feed_select">Select Feeds</string>
     <string name="feed_add">Receive New Feed</string>
+    <string name="no_feeds_selected">Please add a feed in order to receive information.</string>
+    <string name="add_feed_find">How do you want to find a new feed?</string>
+    <string name="add_feed_location">Use your location</string>
+    <string name="add_feed_manually">Search manually for Feeds</string>
+    <string name="check_in_gps">Feeds around your location</string>
+    <string name="feed_gpsResultsAdd">Add to Current Feeds</string>
+    
+    <!-- Lists -->
+    <string name="origin">Origin</string>
+    <string name="destination">Destination</string>
+    <string name="separator">-</string>
+    <!-- TRIP FRAGMENT -->
     <string name="trips_favourites">Favourites</string>
     <string name="trips_schedule">Schedule</string>
     <string name="profile_points">Points:</string>
@@ -57,5 +66,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_add_feed_by_gps">AddFeedByGpsActivity</string>
+    <string name="title_activity_add_feed_manually">AddFeedManuallyActivity</string>
 
 </resources>

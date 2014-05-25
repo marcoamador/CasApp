@@ -1,9 +1,11 @@
 package com.casapp;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -33,6 +36,7 @@ public class MainNavActivity extends FragmentActivity{
 	private static String generatedUsername = "";
 	private static boolean checkedIn = false;
 	private static boolean anonymousMode = false;
+	private static int numFeeds = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,7 @@ public class MainNavActivity extends FragmentActivity{
         public android.support.v4.app.Fragment getItem(int position) {
         	switch(position){
         	case 0:
-        		return FeedFragment.newInstance(1, "cenas");
+        		return FeedFragment.newInstance();
         	case 1:
         		return CommentFragment.newInstance();
         	case 2:
@@ -138,5 +142,27 @@ public class MainNavActivity extends FragmentActivity{
 	public static void setLoggedin(boolean bool){
 		loggedIn = true;
 	}
+
+	public static int getNumFeeds() {
+		return numFeeds;
+	}
+
+	public static void setNumFeeds(int numFeeds) {
+		MainNavActivity.numFeeds = numFeeds;
+	}
+	
+	
+	//Utilities
+	
+	//---------- IS ONLINE -------------
+	//Checks if there is internet connection
+	private boolean isOnline() {		
+		ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable()
+				&& conMgr.getActiveNetworkInfo().isConnected())
+			return true;
+		else return false;
+	}	
 
 }

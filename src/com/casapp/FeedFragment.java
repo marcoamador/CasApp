@@ -1,26 +1,27 @@
 package com.casapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class FeedFragment extends Fragment{
-	 private String title;
-	    private int page;
 
 	    // newInstance constructor for creating fragment with arguments
-	    public static FeedFragment newInstance(int page, String title) {
+	    public static FeedFragment newInstance() {
 	    	FeedFragment feedFragment = new FeedFragment();
 	        Bundle args = new Bundle();
-	        args.putInt("someInt", page);
-	        args.putString("someTitle", title);
 	        feedFragment.setArguments(args);
 	        return feedFragment;
 	    }
@@ -29,8 +30,7 @@ public class FeedFragment extends Fragment{
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        page = getArguments().getInt("someInt", 0);
-	        title = getArguments().getString("someTitle");
+	        
 	    }
 
 	    // Inflate the view for the fragment based on layout XML
@@ -43,16 +43,43 @@ public class FeedFragment extends Fragment{
 	        final RadioButton selectFeed = (RadioButton) view.findViewById(R.id.selectFeed);
 	        final RadioButton receiveFeed = (RadioButton) view.findViewById(R.id.receiveFeed);
 	        
+	        final LinearLayout feedFrame = (LinearLayout) view.findViewById(R.id.feedFrame);
+	        final LinearLayout selectFeedFrame = (LinearLayout) view.findViewById(R.id.selectFeedFrame);
+	        final LinearLayout receiveFeedFrame = (LinearLayout) view.findViewById(R.id.receiveFeedFrame);
+	        
+	        final LinearLayout noFeedsSelected = (LinearLayout) view.findViewById(R.id.noFeedsSelected);
+	        
 	        viewFeed.setChecked(true);
 	        selectFeed.setChecked(false);
 	        receiveFeed.setChecked(false);
+	        
+	        if(MainNavActivity.getNumFeeds() == 0){
+	        	noFeedsSelected.setVisibility(View.VISIBLE);
+	        	feedFrame.setVisibility(View.GONE);
+		        selectFeedFrame.setVisibility(View.GONE);
+		        receiveFeedFrame.setVisibility(View.GONE);
+	        }else{
+	        	noFeedsSelected.setVisibility(View.GONE);
+	        	feedFrame.setVisibility(View.VISIBLE);
+				selectFeedFrame.setVisibility(View.GONE);
+		        receiveFeedFrame.setVisibility(View.GONE);
+	        }
 	        
 	        viewFeed.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
+					if(MainNavActivity.getNumFeeds() == 0){
+			        	noFeedsSelected.setVisibility(View.VISIBLE);
+			        	feedFrame.setVisibility(View.GONE);
+				        selectFeedFrame.setVisibility(View.GONE);
+				        receiveFeedFrame.setVisibility(View.GONE);
+			        }else{
+			        	noFeedsSelected.setVisibility(View.GONE);
+			        	feedFrame.setVisibility(View.VISIBLE);
+						selectFeedFrame.setVisibility(View.GONE);
+				        receiveFeedFrame.setVisibility(View.GONE);
+			        }
 				}
 			});
 	        
@@ -60,14 +87,65 @@ public class FeedFragment extends Fragment{
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
+					if(MainNavActivity.getNumFeeds() == 0){
+			        	noFeedsSelected.setVisibility(View.VISIBLE);
+			        	feedFrame.setVisibility(View.GONE);
+				        selectFeedFrame.setVisibility(View.GONE);
+				        receiveFeedFrame.setVisibility(View.GONE);
+			        }else{
+			        	noFeedsSelected.setVisibility(View.GONE);
+						feedFrame.setVisibility(View.GONE);
+						selectFeedFrame.setVisibility(View.VISIBLE);
+				        receiveFeedFrame.setVisibility(View.GONE);
+			        }
+				}
+			});
+	        
+	        receiveFeed.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					feedFrame.setVisibility(View.GONE);
+					selectFeedFrame.setVisibility(View.GONE);
+			        receiveFeedFrame.setVisibility(View.VISIBLE);
+			        noFeedsSelected.setVisibility(View.GONE);
 				}
 			});
 	        
 	        
-	        //TextView tvLabel = (TextView) view.findViewById(R.id.);
-	        //tvLabel.setText(page + " -- " + title);
+	        //Listeners do separador Receive New Feed
+	        Button locationButton = (Button) view.findViewById(R.id.AddFeedUseLocation);
+	        Button manualButton = (Button) view.findViewById(R.id.AddFeedManual);
+	        
+	        final LinearLayout addFeedGpsFrame = (LinearLayout) view.findViewById(R.id.gpsResultsFrame);
+	        final LinearLayout addFeedManuallyFrame = (LinearLayout) view.findViewById(R.id.AddFeedManuallyFrame);
+	        LinearLayout feedResultsFrame = (LinearLayout) view.findViewById(R.id.FeedResultsFrame);
+	        
+	        locationButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					addFeedGpsFrame.setVisibility(View.VISIBLE);
+					feedFrame.setVisibility(View.GONE);
+					selectFeedFrame.setVisibility(View.GONE);
+			        receiveFeedFrame.setVisibility(View.GONE);
+			        noFeedsSelected.setVisibility(View.GONE);
+				}
+			});
+	        
+	        manualButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					addFeedManuallyFrame.setVisibility(View.VISIBLE);
+					feedFrame.setVisibility(View.GONE);
+					selectFeedFrame.setVisibility(View.GONE);
+			        receiveFeedFrame.setVisibility(View.GONE);
+			        noFeedsSelected.setVisibility(View.GONE);
+				}
+			});
+	        
+	        
 	        return view;
 	    }
 }
