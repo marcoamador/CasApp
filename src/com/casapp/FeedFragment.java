@@ -126,6 +126,7 @@ public class FeedFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					addFeedGpsFrame.setVisibility(View.VISIBLE);
+					addFeedManuallyFrame.setVisibility(View.GONE);
 					feedFrame.setVisibility(View.GONE);
 					selectFeedFrame.setVisibility(View.GONE);
 			        receiveFeedFrame.setVisibility(View.GONE);
@@ -138,6 +139,7 @@ public class FeedFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					addFeedManuallyFrame.setVisibility(View.VISIBLE);
+					addFeedGpsFrame.setVisibility(View.GONE);
 					feedFrame.setVisibility(View.GONE);
 					selectFeedFrame.setVisibility(View.GONE);
 			        receiveFeedFrame.setVisibility(View.GONE);

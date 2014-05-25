@@ -7,6 +7,9 @@
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:showAsAction="never" />
+    <item android:id="@+id/action_checkout"
+          android:title="@string/action_checkout"
+          android:showAsAction="never" />
     <item android:id="@+id/action_logout"
           android:title="@string/action_logout"
           android:showAsAction="never" />

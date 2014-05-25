@@ -103,6 +103,9 @@ public class MainNavActivity extends FragmentActivity{
 	    MenuItem login = menu.findItem(R.id.action_login);
 	    MenuItem logout = menu.findItem(R.id.action_logout);
 	    MenuItem settings = menu.findItem(R.id.action_settings);
+	    MenuItem checkout = menu.findItem(R.id.action_checkout);
+	    
+	    checkout.setVisible(false);
 	    
 	    if(isLoggedin()){
 	    	login.setVisible(false);
@@ -110,6 +113,10 @@ public class MainNavActivity extends FragmentActivity{
 	    	logout.setVisible(false);
 	    	settings.setVisible(false);
 	    	
+	    }
+	    
+	    if(checkedIn){
+	    	checkout.setVisible(true);
 	    }
 	    
 	    settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -141,6 +148,14 @@ public class MainNavActivity extends FragmentActivity{
 	
 	public static void setLoggedin(boolean bool){
 		loggedIn = true;
+	}
+	
+	public static boolean isCheckedIn(){
+		return checkedIn;
+	}
+	
+	public static void setCheckedIn(boolean bool){
+		checkedIn=true;
 	}
 
 	public static int getNumFeeds() {
