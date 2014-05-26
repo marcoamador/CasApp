@@ -43,12 +43,12 @@ public class CommentFragment extends Fragment{
 	        notLoggedInFrame.setVisibility(View.GONE);
 	        notCheckedInFrame.setVisibility(View.GONE);
 	        
-	        if(!MainNavActivity.isLoggedin()){
+	       /*if(!MainNavActivity.isLoggedin()){
 	        	notLoggedInFrame.setVisibility(View.VISIBLE);
 	        }else if(MainNavActivity.isLoggedin() && !MainNavActivity.isCheckedIn()){
 	        	notLoggedInFrame.setVisibility(View.GONE);
 	        	notCheckedInFrame.setVisibility(View.VISIBLE);
-	        }
+	        }*/
 	        
 	        commentLoginButton.setOnClickListener(new OnClickListener() {
 				

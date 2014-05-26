@@ -36,15 +36,26 @@
     <string name="feed_gpsResultsAdd">Add to Current Feeds</string>
     <string name="feed_manualAdd">Search for Feeds</string>
     <string name="search_results">Search Results</string>
+    <string name="commentText">Comment text</string>
     
     <!-- Lists -->
     <string name="origin">Origin</string>
     <string name="destination">Destination</string>
+    <string name="originMyLocation">Origin: My Location</string>
+    <string name="destinationMyLocation">Destination: My Location</string>
     <string name="separator">-</string>
+    <string name="username">UserX</string>
+    <string name="time">00:00</string>
+    <string name="switch_text_yes">Show</string>
+    <string name="switch_text_no">Hide</string>
     <!-- COMMENT FRAGMENT -->
     <string name="notLoggedinComment">Please login in order to comment.</string>
     <string name="submitCommentTitle">Submit a Comment</string>
     <string name="notCheckedinComment">You must check-in on a vehicle in order to submit information about it.</string>
+    <string name="checkin_manualAdd">Search for Options</string>
+    <string name="checkin_useMyLocation">Use My Location</string>
+    <string name="checkinButton">I\'m on this course</string>
+    <string name="checkin_results_header">Search Results</string>
     <!-- TRIP FRAGMENT -->
     <string name="trips_favourites">Favourites</string>
     <string name="trips_schedule">Schedule</string>

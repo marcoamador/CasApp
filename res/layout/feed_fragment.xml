@@ -304,15 +304,6 @@
         </TextView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/feedFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" 
-        >
-        
-        
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/selectFeedFrame"
@@ -330,7 +321,22 @@
             ></ListView>
     </LinearLayout>
 
-    
+    <!-- FeedFrame -->
+    <LinearLayout
+        android:id="@+id/feedFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        >
+	        <com.casapp.RefreshableListView
+				  android:id="@+id/RefreshList"
+				  style="@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center"
+				  android:layout_width="match_parent"
+				  android:layout_height="match_parent" >
+			</com.casapp.RefreshableListView>
+        
+        
+    </LinearLayout>
 
     
 
