@@ -48,6 +48,7 @@
     <string name="time">00:00</string>
     <string name="switch_text_yes">Show</string>
     <string name="switch_text_no">Hide</string>
+    <string name="submit">Submit</string>
     <!-- COMMENT FRAGMENT -->
     <string name="notLoggedinComment">Please login in order to comment.</string>
     <string name="submitCommentTitle">Submit a Comment</string>
@@ -56,9 +57,48 @@
     <string name="checkin_useMyLocation">Use My Location</string>
     <string name="checkinButton">I\'m on this course</string>
     <string name="checkin_results_header">Search Results</string>
+    <string name="atmosphere">Atmosphere</string>
+    <string name="driver">Driver</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="insertWrittenComment">Insert Written Comment</string>
+    <string name="atmosphereTitle">Atmosphere</string>
+    <string name="temperatureTitle">Temperature</string>
+    <string name="temperatureValue">Adequate</string>
+    <string name="noiseTitle">Noise</string>
+    <string name="noiseValue">Normal</string>
+    <string name="crowdingTitle">Crowding</string>
+    <string name="crowdingValue">Normal</string>
+    <string name="seatingTitle">Seating</string>
+    <string name="seatingValue">Normal</string>
+    <string name="cleanTitle">Cleanliness</string>
+    <string name="cleanValue">Normal</string>
+    <string name="sceneryTitle">Scenery</string>
+    <string name="sceneryValue">Normal</string>
+    <string name="securityTitle">Perceived Security</string>
+    <string name="securityValue">Normal</string>
+    <string name="smoothnessTitle">Smoothness</string>
+    <string name="smoothnessValue">Normal</string>
+    <string name="driverTitle">Driver</string>
+    <string name="vehicleTitle">Vehicle Progress</string>
+    <string name="speedTitle">Travel Speed</string>
+    <string name="speedValue">Normal</string>
+    <string name="delayTitle">Vehicle Delay</string>
+    <string name="delayValue">On Schedule</string>
+    <string name="courtesyTitle">Courtesy</string>
+    <string name="courtesyValue">Normal</string>
+    <string name="similarTitle">Similar Vehicle</string>
+    <string name="similarValue">On Schedule</string>
+    
+    <string name="commentSendButton">Send</string>
+    <string name="dismiss">Dismiss</string>
+    
     <!-- TRIP FRAGMENT -->
     <string name="trips_favourites">Favourites</string>
     <string name="trips_schedule">Schedule</string>
+    <string name="tripsNotLoggedIn">Please login in order to access these features.</string>
+    <string name="tripsLoginButton">Proceed to Login</string>
+    
+    <!-- PROFILE FRAGMENT -->
     <string name="profile_points">Points:</string>
     <string name="profile_privacy">Privacy Settings</string>
     <string name="profile_rewards">Claim Rewards</string>
