@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="70dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        
+        <TextView
+            android:id="@+id/scheduleItemOrigin"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="10dp"
+            android:layout_weight="30"
+            android:gravity="center_vertical|right"
+            android:text="@string/origin"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        
+        <TextView
+            android:id="@+id/scheduleItemSeparator"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/separator"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        
+        <TextView 
+        android:id="@+id/scheduleItemDestination"
+        android:text="@string/destination"
+        android:layout_weight="30"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="fill_parent"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical|left"
+        />
+
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/scheduleItemDate"
+            android:layout_weight="20"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:text="@string/date"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        
+         <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/scheduleItemHour"
+            android:layout_weight="15"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginRight="25dp"
+            android:textColor="@android:color/white"
+            android:text="@string/hour"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+         
+    </LinearLayout>

@@ -6,14 +6,14 @@
         <RadioGroup
         android:id="@+id/rdogrp_trips"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/favourites"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/favourites_selector"
             android:button="@null"
@@ -22,12 +22,15 @@
             android:maxLines="1"
             android:text="@string/trips_favourites"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/heart" 
+            android:drawablePadding="-30dp"
+            android:paddingLeft="20dp"/>
 
         <RadioButton
             android:id="@+id/schedule"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/schedule_selector"
             android:button="@null"
@@ -35,14 +38,17 @@
             android:maxLines="1"
             android:text="@string/trips_schedule"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/schedule" 
+            android:drawablePadding="-30dp"
+            android:paddingLeft="20dp" />
     </RadioGroup>
 
     
-
+	<!-- Not Logged In Frame -->
     <LinearLayout
         android:id="@+id/tripsNotLoggedInFrame"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:visibility="gone" >
@@ -77,21 +83,363 @@
             </Button>
         </LinearLayout>
     </LinearLayout>
+    
+    <!-- Favourites List -->
 
     <LinearLayout
         android:id="@+id/favouritesFrame"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+         >
+  
+        <ListView android:id="@+id/favouriteslist"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:cacheColorHint="@android:color/transparent"
+        ></ListView>
+            
+        
+        <Button
+                android:id="@+id/addFavouriteButton"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/button_selected"
+                android:text="@string/addFavouriteButton"
+                
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/plus"
+                android:drawablePadding="-80dp"
+                android:paddingLeft="100dp" >
+            </Button>
     </LinearLayout>
 
+    <!-- Add Favourite Frame -->
+    
     <LinearLayout
+        android:id="@+id/addFavouriteFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        
+        
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/submit_favourite_header"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/addFavourite"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        
+
+        <EditText
+            android:id="@+id/addFavouriteManualOrigin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="80dp"
+            android:gravity="left"
+            android:hint="@string/originMyLocation"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/addFavouriteManualSwitch"
+                android:layout_width="28dp"
+                android:layout_height="29dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/swap" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/addFavouriteManualDestination"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="100dp"
+            android:gravity="left"
+            android:hint="@string/destinationMyLocation"
+            android:textColor="@android:color/white" />
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/AddFavouriteButton"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/search2"
+                android:drawablePadding="-80dp"
+                android:paddingLeft="80dip"
+                android:text="@string/FavouritesSearch"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
+
+    </LinearLayout>
+    
+    
+    <!-- Favourite Results Frame -->
+     <LinearLayout
+        android:id="@+id/favouriteResultsFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        
+        >
+
+        <TextView
+            android:id="@+id/favourite_results_header"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/checkin_results_header"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/favouriteResultslist"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:cacheColorHint="@android:color/transparent"
+            android:choiceMode="multipleChoice" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.20"
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/favouriteAddButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/play"
+                android:drawablePadding="-60dp"
+                android:paddingLeft="60dip"
+                android:text="@string/addFavourite"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+    
+    
+    
+    <!-- Schedule Frame -->
+     <LinearLayout
         android:id="@+id/scheduleFrame"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+         >
+  
+        <ListView android:id="@+id/schedulelist"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:cacheColorHint="@android:color/transparent"
+        ></ListView>
+            
+        
+        <Button
+                android:id="@+id/planNewTripButton"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/button_selected"
+                android:text="@string/planNewTripButton"
+                
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/maps"
+                android:drawablePadding="-80dp"
+                android:paddingLeft="100dp" >
+            </Button>
+    </LinearLayout>
+    
+    <!-- Add Schedule Item Frame -->
+    
+    <LinearLayout
+        android:id="@+id/addScheduleItemFrame"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/addScheduleHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/planNewTrip"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/addScheduleManualOrigin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="30dp"
+            android:gravity="left"
+            android:hint="@string/originMyLocation"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/addScheduleManualSwitch"
+                android:layout_width="28dp"
+                android:layout_height="29dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/swap" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/addScheduleManualDestination"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="100dp"
+            android:gravity="left"
+            android:hint="@string/destinationMyLocation"
+            android:textColor="@android:color/white" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+            
+            
+            <Button
+                android:id="@+id/addScheduleDatePickerButton"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_selected"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:text="@string/scheduleDatePick"
+                android:textSize="16sp"
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold" >
+            </Button>
+            
+            <Button
+                android:id="@+id/addScheduleHourPickerButton"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_selected"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                
+                android:layout_marginBottom="40dp"
+                android:text="@string/scheduleHourPick"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+            
+            
+
+            <Button
+                android:id="@+id/addScheduleButton"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/search2"
+                android:drawablePadding="-80dp"
+                android:paddingLeft="80dip"
+                android:text="@string/searchScheduleButton"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- Schedule Results Frame -->
+    <LinearLayout
+        android:id="@+id/scheduleResultsFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
+
+        <TextView
+            android:id="@+id/scheduleResults_header"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/schedule_results_header"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/scheduleResultslist"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:cacheColorHint="@android:color/transparent"
+            android:choiceMode="singleChoice" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.20"
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/scheduleButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/play"
+                android:drawablePadding="-60dp"
+                android:paddingLeft="60dip"
+                android:text="@string/scheduleButton"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

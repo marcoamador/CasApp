@@ -89,6 +89,7 @@
     <string name="similarTitle">Similar Vehicle</string>
     <string name="similarValue">On Schedule</string>
     
+    
     <string name="commentSendButton">Send</string>
     <string name="dismiss">Dismiss</string>
     
@@ -97,6 +98,19 @@
     <string name="trips_schedule">Schedule</string>
     <string name="tripsNotLoggedIn">Please login in order to access these features.</string>
     <string name="tripsLoginButton">Proceed to Login</string>
+    <string name="addFavouriteButton">Add New Favourite</string>
+    <string name="active">Active</string>
+    <string name="addFavourite">Add a Favourite Course</string>
+    <string name="FavouritesSearch">Search for Options</string>
+    <string name="planNewTripButton">Plan New Trip</string>
+    <string name="planNewTrip">Plan New Trip</string>
+    <string name="searchScheduleButton">Search Trip Options</string>
+    <string name="scheduleDatePick">Select Days of the Week</string>
+    <string name="scheduleHourPick">Choose Hour</string>
+    <string name="date">Mon-Fri</string>
+    <string name="hour">18:00</string>
+    <string name="schedule_results_header">Trip Options</string>
+    <string name="scheduleButton">Add Trip to Schedule</string>
     
     <!-- PROFILE FRAGMENT -->
     <string name="profile_points">Points:</string>
