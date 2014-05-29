@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+     <string name="urixml">http://192.168.1.67/Service.svc/</string>
+     <string name="loadingMessage">Loading</string>
+    <string name="no_internet">No internet connection!</string>
+    <string name="logout_successful">Logged out!</string>
+    <string name="checkout_successful">Checked out!</string>  
+    <string name="logging_in">Logging you in.</string>
+    <string name="login_successful">Successfully logged in.</string>
+    <string name="creating_account">Creating new account</string>
+    <string name="registration_successful">Registration completed.</string>
+    
 
     <string name="app_name">CasApp</string>
     <string name="title_section1">Section 1</string>

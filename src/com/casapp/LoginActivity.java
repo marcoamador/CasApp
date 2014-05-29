@@ -1,17 +1,34 @@
 package com.casapp;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import com.google.gson.reflect.TypeToken;
+
+import data.objects.UserDefinitions;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -19,18 +36,13 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends FragmentActivity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -52,6 +64,13 @@ public class LoginActivity extends FragmentActivity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
+	
+	private HashMap<String, Object> headers = new HashMap<String, Object>();	
+	//private User userLogged = new User();
+	private UserDefinitions userDefinitions = new UserDefinitions();
+	private String authToken = null;
+	private String dateLogin = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +183,9 @@ public class LoginActivity extends FragmentActivity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			String uriLogin = "login";
+			String typeStr = "0";
+			mAuthTask.execute(typeStr, uriLogin, mEmail, mPassword);
 		}
 	}
 
@@ -212,63 +233,153 @@ public class LoginActivity extends FragmentActivity {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	//---------- UI HANDLER -------------	
+		//Provides the user with information in case of failure of the web service requests 
+		final Handler handler = new Handler() {
+			public void handleMessage(Message msg) {
+				switch(msg.what) {
+					case 0:
+						//Exception
+						break;
+					case 1:
+						Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+						break;
+					case 2:
+						//Login success
+						Toast.makeText(getApplicationContext(), getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
+						break;
+					default:
+						break;
+				}
+			}
+		};   
 	
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
+	public class UserLoginTask extends AsyncTask<String, String, String> {	    
+	    @Override
+	    protected String doInBackground(String... params) {
+	    	String typeStr = params[0];
+	    	int type = Integer.parseInt(typeStr);
+	    	String ret = "";
+	    	
+	    	Log.d("LOGIN", "DOINBACKGROUND - type= " + typeStr);
+	    	
+			if (isOnline()) {
+    			try {
 
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
+    		    	Log.d("LOGIN", "entrou - type= " + typeStr);
+    				switch(type) {
+    					//LOGIN
+ 
+    					case 0:
+    						String uriLogin = params[1];
+    						String usernameString = params[2];
+    						String passwordString = params[3];
+    						
+    						Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    						Date dateLoginD = c.getTime();
+    						SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
+    						dateLogin= df.format(dateLoginD) + " GMT" ;
+    						
+    						//Generates the token
+    						HashMap<String, Object> tokenParams = new HashMap<String, Object>();
+    						tokenParams.put("username", usernameString);
+    						tokenParams.put("dateLogin", dateLogin);
+    						authToken = CasApp.calculateCheckSum(tokenParams, passwordString);
+    						
+    						//Creates the request header
+    						headers.put("username", usernameString);
+    						headers.put("dateLogin", dateLogin);
+    						headers.put("authToken", authToken);   
+    						//headers.put("Content-Type:", "application/json");
+    						
+    						Log.d("LOGIN", "Username: " + usernameString + " DateLogin: " + dateLogin + " AuthToken: " + authToken);
+    						userDefinitions = CasApp.doGet(LoginActivity.this, uriLogin, headers, new TypeToken<UserDefinitions>() {}.getType());
+    						Log.d("LOGIN", "DOINBACKGROUND - depois get");
+    						//
+    						handler.sendEmptyMessage(2);
+    						//AVISAR QUE FEZ LOGIN
+    						ret = "ok login";
+    						break;
+						default:
+							break;
+    				}
+    			}
+    			catch(Exception e) {
+    				//ERRO
+    				handler.sendEmptyMessage(0);
+					userDefinitions = new UserDefinitions();
+					return e.getMessage();
+    			}
 			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
+			else {
+				//OFFLINE
+				Log.d("LOGIN", "ent - type= " + typeStr);
+				handler.sendEmptyMessage(1);
+	    		userDefinitions = new UserDefinitions();
+	    		return "ok";					
+			}
+			Log.d("LOGIN", "DOINBACKGROUND - ret= " + ret);
+			return ret;
+	    }
+	    
+		   @Override
+	      protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+				Log.d("LOGIN", "UPLOADDATA POSTEXECUTE - result= " + result);				
+				if(!result.startsWith("ok")) {
+					Log.d("LOGIN", "UPLOADDATA POSTEXECUTE - Exception");
+					Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+					Intent myIntent = new Intent(LoginActivity.this, LoginActivity.class);
+	        		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        		startActivity(myIntent);
+	        		finish();
 				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				finish();
-				MainNavActivity.setLoggedin(true);
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
+				else if(result.contains("login")) {
+					Log.d("LOGIN", "UPLOADDATA POSTEXECUTE - checkout");
+					//Saves the information needed for the request headers in the shared preferences
+			        SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
+			        Editor edit = pref.edit();
+			        edit.putString(CasApp.PREF_DATELOGIN, dateLogin).putString(CasApp.PREF_AUTHTOKEN, authToken);
+			        MainNavActivity.setLoggedin(true);
+			        
+			        edit.putBoolean(CasApp.PREF_CHECKIN, userDefinitions.isCheckedIn()).commit();
+			        edit.putString(CasApp.PREF_USERNAME, userDefinitions.getUsername());
+			        edit.putString(CasApp.PREFS_NAME, userDefinitions.getName());
+			        edit.putString(CasApp.PREF_PASSWORD, mPassword);
+			        edit.putString(CasApp.PREF_POINTS, Integer.toString(userDefinitions.getTotalPoints()));
+			        edit.putString(CasApp.PREF_FEEDBACK_POINTS, Integer.toString(userDefinitions.getFeedbackPoints()));
+			        edit.commit();
+			        Log.d("LOGIN", "LOGIN : after putting in prefs: " + authToken);
+	        		
+	        		Intent myIntent = new Intent(LoginActivity.this, MainNavActivity.class);
+	        		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        		startActivity(myIntent);
+	        		finish();
+				}
+				else{
+					mAuthTask = null;
+					showProgress(false);
+				}
+	      }
+		
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
 			showProgress(false);
 		}
+		
+		private boolean isOnline() {
+			ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable()
+					&& conMgr.getActiveNetworkInfo().isConnected())
+				return true;
+			else return false;
+		}	
 	}
 }

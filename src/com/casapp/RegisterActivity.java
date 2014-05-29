@@ -1,24 +1,43 @@
 package com.casapp;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import com.google.gson.reflect.TypeToken;
+
+import data.objects.User;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterActivity extends FragmentActivity {
 	
@@ -41,12 +60,16 @@ public class RegisterActivity extends FragmentActivity {
 	private View mRegisterStatusView;
 	private TextView mRegisterStatusMessageView;
 	
+	private User userToRegister = new User();
+	
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		
 		final ActionBar actionBar = getActionBar();
 		actionBar.setTitle("CasApp");
@@ -113,7 +136,6 @@ public class RegisterActivity extends FragmentActivity {
 	}
 
 	protected void attemptRegister() {
-		// TODO Auto-generated method stub
 		
 		 if (mAuthTask != null) {
 			return;
@@ -201,10 +223,18 @@ public class RegisterActivity extends FragmentActivity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mRegisterStatusMessageView.setText(R.string.login_progress_signing_in);
+			mRegisterStatusMessageView.setText(R.string.creating_account);
 			showProgress(true);
+			userToRegister = new User();
+        	userToRegister.setName(mName);
+        	userToRegister.setUsername(mUsername);
+        	userToRegister.setPassword(mPassword);
+        	userToRegister.setEmail(mEmail);
+        	
+			String uriRegister = "user";
+			String typeStr = "0";  
 			mAuthTask = new UserRegisterTask();
-			mAuthTask.execute((Void) null);
+			mAuthTask.execute(typeStr, uriRegister);
 		}
 	}
 	
@@ -250,34 +280,122 @@ public class RegisterActivity extends FragmentActivity {
 		}
 	}
 	
-	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
+	//---------- UI HANDLER -------------	
+		//Provides the user with information in case of failure of the web service requests 
+		final Handler handler = new Handler() {
+			public void handleMessage(Message msg) {
+				switch(msg.what) {
+					case 0:
+						//Exception
+						break;
+					case 1:
+						Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+						break;
+					case 2:
+						//Registration success
+						Toast.makeText(getApplicationContext(), getString(R.string.registration_successful), Toast.LENGTH_SHORT).show();
+						break;
+					default:
+						break;
+				}
 			}
+		};
+	
+	public class UserRegisterTask extends AsyncTask<String, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+	        Log.d("LOGIN", "ONPREEXECUTE");
+		};
+		
+		@Override
+		protected String doInBackground(String... params) {
+	    	String typeStr = params[0];
+	    	int type = Integer.parseInt(typeStr);
+	    	String ret = "";
+	    	
+	    	Log.d("REGISTRATION", "DOINBACKGROUND - type= " + typeStr);
+	    	
+			if (isOnline()) {
+    			try {
+    				switch(type) {
+    					//Registration
+    					case 0:
+    						String uriRegistration = params[1];
+    						//Sends the password encrypted in MD5
+    						String passwordMD5 = CasApp.calculateCheckSum(new HashMap<String, Object>(), userToRegister.getPassword());
+    						userToRegister.setPassword(passwordMD5);
+    						
+    						HashMap<String, Object> headers = new HashMap<String, Object>();
+    						
+    						Log.d("REGISTRATION", "DOINBACKGROUND - antes put");
+    						CasApp.doPut(RegisterActivity.this, uriRegistration, headers, new TypeToken<User>() {}.getType(), userToRegister);
+    						Log.d("REGISTRATION", "DOINBACKGROUND - depois put");
+    						handler.sendEmptyMessage(2);
+    						ret = "ok registration";
+    						break;
+						default:
+							break;
+    				}
+    			}
+    			catch(Exception e) {
+					handler.sendEmptyMessage(0);
+					return e.getMessage();
+    			}
+			}
+			else {
+	    		handler.sendEmptyMessage(1);
+	    		return "ok";					
+			}
+			Log.d("REGISTRATION", "DOINBACKGROUND - ret= " + ret);
+			return ret;
+	    }
+		
+		
 
-			// TODO: register the new account here.
-			return true;
-		}
-
-		protected void onPostExecute(final Boolean success) {
+		protected void onPostExecute(final String result) {
+			super.onPostExecute(result);
 			mAuthTask = null;
 			showProgress(false);
+			
 
-			if (success) {
-				finish();
-				MainNavActivity.setLoggedin(true);
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+			//Checks if there was an exception
+			if(!result.startsWith("ok")) {
+				Log.d("REGISTRATION", "UPLOADDATA POSTEXECUTE - Exception");
+				Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
 			}
+			else if(result.contains("registration")) {
+				SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
+				
+				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+				Date dateLoginD = c.getTime();
+				SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
+				String dateLogin= df.format(dateLoginD) + " GMT" ;
+				
+				//Generates the token
+				HashMap<String, Object> tokenParams = new HashMap<String, Object>();
+				tokenParams.put("username", mUsername);
+				tokenParams.put("dateLogin", dateLogin);
+				String authToken = CasApp.calculateCheckSum(tokenParams, mPassword);
+			
+				Editor edit = pref.edit();
+				edit.putString(CasApp.PREF_USERNAME, mUsername);
+				edit.putString(CasApp.PREFS_NAME, mName);
+		        edit.putString(CasApp.PREF_PASSWORD, mPassword);
+		        edit.putString(CasApp.PREF_AUTHTOKEN,  authToken);
+		        edit.putString(CasApp.PREF_POINTS, "0");
+		        edit.putString(CasApp.PREF_FEEDBACK_POINTS, "0");
+				
+		        edit.putString(CasApp.PREF_DATELOGIN, dateLogin);
+		        edit.commit();
+		        Intent myIntent = new Intent(RegisterActivity.this, MainNavActivity.class);
+        		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        		startActivity(myIntent);
+		        
+				MainNavActivity.setLoggedin(true);
+		        finish();
+			}
+			
 		}
 
 		@Override
@@ -287,6 +405,15 @@ public class RegisterActivity extends FragmentActivity {
 		}
 	}	
 	
+	
+	private boolean isOnline() {
+		ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable()
+				&& conMgr.getActiveNetworkInfo().isConnected())
+			return true;
+		else return false;
+	}	
 }
 
 

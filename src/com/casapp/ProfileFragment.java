@@ -1,6 +1,8 @@
 package com.casapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 public class ProfileFragment extends Fragment{
 
@@ -79,6 +82,14 @@ public class ProfileFragment extends Fragment{
 						return;
 					}
 				});
+	        }else{
+	        	TextView username = (TextView) view.findViewById(R.id.profileUsername);
+	        	TextView totalPoints = (TextView) view.findViewById(R.id.profileNumPoints);
+	        	TextView feedbackPoints = (TextView) view.findViewById(R.id.feedbackNumPoints);
+	        	SharedPreferences pref = this.getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+	        	username.setText(pref.getString(CasApp.PREF_USERNAME, "Undefined"));
+	        	totalPoints.setText(pref.getString(CasApp.PREF_POINTS, "NaN"));
+	        	feedbackPoints.setText(pref.getString(CasApp.PREF_FEEDBACK_POINTS, "NaN"));
 	        }
 	        
 	        
