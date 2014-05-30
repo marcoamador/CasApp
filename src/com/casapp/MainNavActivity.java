@@ -210,6 +210,18 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 				return true;
 			}
 		});
+	    
+	    logout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Log.d("MENU", "Menu onOptionsItemSelected: LOGOUT");
+	        	doLogout();
+	        	Intent navIntent = new Intent(getApplicationContext(), MainNavActivity.class);
+	        	startActivity(navIntent);
+				return true;
+			}
+		});
 	    return super.onCreateOptionsMenu(menu);
 	}
 
@@ -218,7 +230,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	}
 	
 	public static void setLoggedin(boolean bool){
-		loggedIn = true;
+		loggedIn = bool;
 	}
 	
 	public static boolean isCheckedIn(){
@@ -226,7 +238,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	}
 	
 	public static void setCheckedIn(boolean bool){
-		checkedIn=true;
+		checkedIn=bool;
 	}
 
 	public static int getNumFeeds() {
@@ -268,6 +280,24 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			}
 		};
 	
+		
+		//--------- LOGOUT -----------
+		
+		//Do logout
+		public boolean doLogout() {
+			
+			Log.d("LOGOUT", "Enters function");
+
+			String uriLogout = "logout";
+			
+			String typeStr = "1";
+			Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
+			UploadData uploadDataCheckOut = new UploadData();
+			uploadDataCheckOut.execute(typeStr, uriLogout);
+			setLoggedin(false);
+			Log.d("LOGOUT", "Calls upload data");
+			return true;
+		}	
 	
 	
 	
@@ -295,7 +325,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			if (isOnline()) {
 				try {
 					switch(type) {
-						case 0:
+						case 0: //CHECKOUT
 							String uriCheckOut = params[1];
 							CasApp.doPost(getApplicationContext(), uriCheckOut, headers, new TypeToken<Integer>() {}.getType(), null);
 							handler.sendEmptyMessage(2);
@@ -371,12 +401,14 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 				if(result.contains("logout")) {
 					SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
 					pref.edit().remove(CasApp.PREF_CHECKIN).remove(CasApp.PREF_AUTHTOKEN).remove(CasApp.PREF_DATELOGIN)
-						.remove(CasApp.PREF_LATITUDE).remove(CasApp.PREF_LONGITUDE).commit();
+						.remove(CasApp.PREF_LATITUDE).remove(CasApp.PREF_LONGITUDE).remove(CasApp.PREF_USERNAME).remove(CasApp.PREF_POINTS)
+						.remove(CasApp.PREF_FEEDBACK_POINTS).remove(CasApp.PREF_PASSWORD).commit();
+					setLoggedin(false);
 					
 					
 					//Goes back to the login activity
 					Intent mainIntent = new Intent(getApplicationContext(), MainNavActivity.class);
-					mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  );  
+					mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );  
 					startActivity(mainIntent);  
 					finish();  
 					

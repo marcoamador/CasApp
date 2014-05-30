@@ -1,11 +1,15 @@
 package com.casapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 public class TripsFragment extends Fragment{
@@ -32,16 +36,40 @@ public class TripsFragment extends Fragment{
 	        final RadioButton favourites = (RadioButton) view.findViewById(R.id.favourites);
 	        final RadioButton schedule = (RadioButton) view.findViewById(R.id.schedule);
 	        
+	        final LinearLayout tripsNotLoggedInFrame = (LinearLayout) view.findViewById(R.id.tripsNotLoggedInFrame);
+	        final LinearLayout favouritesFrame = (LinearLayout) view.findViewById(R.id.favouritesFrame);
+	        final LinearLayout scheduleFrame = (LinearLayout) view.findViewById(R.id.scheduleFrame);
+	        final LinearLayout addFavouriteFrame = (LinearLayout) view.findViewById(R.id.addFavouriteFrame);
+	        
+	        Button tripsLoginButton = (Button) view.findViewById(R.id.tripsLoginButton);
+	        Button tripsAddFavouriteButton = (Button) view.findViewById(R.id.addFavouriteButton);
+	        Button tripsSearchFavouriteButton = (Button) view.findViewById(R.id.searchFavouriteButton);
+	        
+	        
+	        
 	        favourites.setChecked(true);
 	        schedule.setChecked(false);
+	        
+	        if(MainNavActivity.isLoggedin()) {
+	        	favouritesFrame.setVisibility(View.VISIBLE);
+	            scheduleFrame.setVisibility(View.GONE);
+	        }else
+	        	tripsNotLoggedInFrame.setVisibility(View.VISIBLE);
+	       
 	        
 	        
 	        favourites.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
+					if(MainNavActivity.isLoggedin()){
+						favouritesFrame.setVisibility(View.VISIBLE);
+						scheduleFrame.setVisibility(View.GONE);
+					}
+			        else{
+			        	tripsNotLoggedInFrame.setVisibility(View.VISIBLE);
+			        	scheduleFrame.setVisibility(View.GONE);
+			        }	
 				}
 			});
 	        
@@ -49,7 +77,33 @@ public class TripsFragment extends Fragment{
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
+					if(MainNavActivity.isLoggedin()){
+						scheduleFrame.setVisibility(View.VISIBLE);
+						favouritesFrame.setVisibility(View.GONE);
+					}
+			        else{
+			        	tripsNotLoggedInFrame.setVisibility(View.VISIBLE);
+			        	scheduleFrame.setVisibility(View.GONE);
+			        }
+					
+				}
+			});
+	        
+	        tripsLoginButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+					startActivity(loginIntent);					
+				}
+			});
+	        
+	        tripsAddFavouriteButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					favouritesFrame.setVisibility(View.GONE);
+					addFavouriteFrame.setVisibility(View.VISIBLE);
 					
 				}
 			});

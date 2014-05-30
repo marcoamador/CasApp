@@ -38,15 +38,14 @@ public class CommentFragment extends Fragment{
 	        final Button commentLoginButton = (Button) view.findViewById(R.id.CommentLoginButton);
 	        //Button searchOptionsButton = (Button) view.findViewById(R.id.)
 	        
-	        notLoggedInFrame.setVisibility(View.GONE);
-	        notCheckedInFrame.setVisibility(View.GONE);
 	        
-	       /*if(!MainNavActivity.isLoggedin()){
+	        if(!MainNavActivity.isLoggedin()){
 	        	notLoggedInFrame.setVisibility(View.VISIBLE);
+	        	notCheckedInFrame.setVisibility(View.GONE);
 	        }else if(MainNavActivity.isLoggedin() && !MainNavActivity.isCheckedIn()){
 	        	notLoggedInFrame.setVisibility(View.GONE);
 	        	notCheckedInFrame.setVisibility(View.VISIBLE);
-	        }*/
+	        }
 	        
 	        commentLoginButton.setOnClickListener(new OnClickListener() {
 				
@@ -54,9 +53,11 @@ public class CommentFragment extends Fragment{
 				public void onClick(View v) {
 					Intent i = new Intent(getActivity(), LoginActivity.class);
 					startActivity(i);
-					
+					return;
 				}
 			});
+	        
+	        
 	      
 	        
 	        //TextView tvLabel = (TextView) view.findViewById(R.id.);

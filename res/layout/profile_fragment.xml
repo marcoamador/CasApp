@@ -66,7 +66,6 @@
                     android:id="@+id/profilePoints"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/profile_points"
                     android:textColor="@android:color/white" />
@@ -75,7 +74,7 @@
                     android:id="@+id/profileNumPoints"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/profile_num_points"
                     android:textColor="@android:color/white" />
@@ -91,7 +90,6 @@
                     android:id="@+id/feedbackPoints"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/profileReputation"
                     android:textColor="@android:color/white" />
@@ -100,7 +98,7 @@
                     android:id="@+id/feedbackNumPoints"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/profile_num_reputation"
                     android:textColor="@android:color/white" />

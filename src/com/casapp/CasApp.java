@@ -212,6 +212,7 @@ public class CasApp extends Application{
 			//Properties of the http request
 			StringEntity se = new StringEntity(payload, "UTF-8");
 			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			Log.d("envia", payload);
 			httpput.setEntity(se);
 			httpput.setHeader("Accept", "application/json");
 			httpput.setHeader("Content-Type", "application/json");
@@ -331,6 +332,7 @@ public class CasApp extends Application{
 			while(itr.hasNext()) {
 				Map.Entry pairs = (Map.Entry) itr.next();
 				httppost.setHeader(pairs.getKey().toString(), pairs.getValue().toString());
+				Log.d("headers", pairs.getKey().toString() + " "+ pairs.getValue().toString());
 			}
 			
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);

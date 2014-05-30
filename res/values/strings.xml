@@ -10,6 +10,8 @@
     <string name="login_successful">Successfully logged in.</string>
     <string name="creating_account">Creating new account</string>
     <string name="registration_successful">Registration completed.</string>
+    <string name="usernameHint">Username</string>
+    <string name="error_invalid_username">Invalid username</string>
     
 
     <string name="app_name">CasApp</string>

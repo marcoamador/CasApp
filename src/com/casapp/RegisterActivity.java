@@ -323,8 +323,8 @@ public class RegisterActivity extends FragmentActivity {
     					case 0:
     						String uriRegistration = params[1];
     						//Sends the password encrypted in MD5
-    						String passwordMD5 = CasApp.calculateCheckSum(new HashMap<String, Object>(), userToRegister.getPassword());
-    						userToRegister.setPassword(passwordMD5);
+    						//String passwordMD5 = CasApp.calculateCheckSum(new HashMap<String, Object>(), userToRegister.getPassword());
+    						//userToRegister.setPassword(passwordMD5);
     						
     						HashMap<String, Object> headers = new HashMap<String, Object>();
     						

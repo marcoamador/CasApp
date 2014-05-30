@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment{
 	        rewards.setChecked(false);
 	        privacyFrame.setVisibility(View.VISIBLE);
 	        rewardsFrame.setVisibility(View.GONE);
+	        Log.d("PROFILE", Boolean.toString(MainNavActivity.isLoggedin()));
 	        
 			privacy.setOnClickListener(new OnClickListener() {
 							

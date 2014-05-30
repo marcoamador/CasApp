@@ -55,11 +55,11 @@ public class LoginActivity extends FragmentActivity {
 	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
-	private String mEmail;
+	private String mUsername;
 	private String mPassword;
 
 	// UI references.
-	private EditText mEmailView;
+	private EditText mUsernameView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
@@ -83,9 +83,8 @@ public class LoginActivity extends FragmentActivity {
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		mUsernameView = (EditText) findViewById(R.id.username);
+		mUsernameView.setText(mUsername);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -141,11 +140,11 @@ public class LoginActivity extends FragmentActivity {
 		}
 
 		// Reset errors.
-		mEmailView.setError(null);
+		mUsernameView.setError(null);
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
+		mUsername = mUsernameView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
 		boolean cancel = false;
@@ -163,13 +162,13 @@ public class LoginActivity extends FragmentActivity {
 		}
 
 		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
+		if (TextUtils.isEmpty(mUsername)) {
+			mUsernameView.setError(getString(R.string.error_field_required));
+			focusView = mUsernameView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
+		} else if (mUsername.contains("@")) {
+			mUsernameView.setError(getString(R.string.error_invalid_username));
+			focusView = mUsernameView;
 			cancel = true;
 		}
 
@@ -185,7 +184,7 @@ public class LoginActivity extends FragmentActivity {
 			mAuthTask = new UserLoginTask();
 			String uriLogin = "login";
 			String typeStr = "0";
-			mAuthTask.execute(typeStr, uriLogin, mEmail, mPassword);
+			mAuthTask.execute(typeStr, uriLogin, mUsername, mPassword);
 		}
 	}
 
@@ -344,10 +343,9 @@ public class LoginActivity extends FragmentActivity {
 					//Saves the information needed for the request headers in the shared preferences
 			        SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
 			        Editor edit = pref.edit();
-			        edit.putString(CasApp.PREF_DATELOGIN, dateLogin).putString(CasApp.PREF_AUTHTOKEN, authToken);
-			        MainNavActivity.setLoggedin(true);
-			        
-			        edit.putBoolean(CasApp.PREF_CHECKIN, userDefinitions.isCheckedIn()).commit();
+			        edit.putString(CasApp.PREF_DATELOGIN, dateLogin);
+			        edit.putString(CasApp.PREF_AUTHTOKEN, authToken);
+			        edit.putBoolean(CasApp.PREF_CHECKIN, userDefinitions.isCheckedIn());
 			        edit.putString(CasApp.PREF_USERNAME, userDefinitions.getUsername());
 			        edit.putString(CasApp.PREFS_NAME, userDefinitions.getName());
 			        edit.putString(CasApp.PREF_PASSWORD, mPassword);
@@ -355,7 +353,7 @@ public class LoginActivity extends FragmentActivity {
 			        edit.putString(CasApp.PREF_FEEDBACK_POINTS, Integer.toString(userDefinitions.getFeedbackPoints()));
 			        edit.commit();
 			        Log.d("LOGIN", "LOGIN : after putting in prefs: " + authToken);
-	        		
+			        MainNavActivity.setLoggedin(true);
 	        		Intent myIntent = new Intent(LoginActivity.this, MainNavActivity.class);
 	        		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        		startActivity(myIntent);
