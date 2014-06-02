@@ -445,10 +445,27 @@
         </ProgressBar>
         
     	</LinearLayout>
+    	
+         <TextView
+            android:id="@+id/feed_header"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/feed_header"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+       
+       <View 
+           android:layout_marginTop="2dp"
+		   android:layout_width="fill_parent"
+		   android:layout_height="1dp"       
+		   android:background="#33B5E5" />
         
       
         
 	        <com.casapp.RefreshableListView
+	              android:layout_marginTop="10dp"
 				  android:id="@+id/RefreshList"
 				  style="@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center"
 				  android:layout_width="match_parent"

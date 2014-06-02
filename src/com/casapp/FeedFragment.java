@@ -47,6 +47,7 @@ public class FeedFragment extends Fragment{
 	    NewsFeedAdapter feedAdapter;
 	    ProgressBar bar;
 	    int size = 0;
+	    Boolean refresh = false;
 
 	    // newInstance constructor for creating fragment with arguments
 	    public static FeedFragment newInstance() {
@@ -117,16 +118,17 @@ public class FeedFragment extends Fragment{
 					refreshList(list);
 					
 				}
-			});//---------------------------------------------------------------Important
-			feedList.setOnListLoadMoreListener(new onListLoadMoreListener() {
+			});
+		    
+		    feedList.setOnListLoadMoreListener(new onListLoadMoreListener() {
 				
 				@Override
 				public void LoadMore(RefreshableListView list) {
-					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
-					refreshList(list);
+					// TODO Auto-generated method stub
 					
 				}
 			});
+		    
 		    
 		    
 		    
@@ -597,8 +599,11 @@ public class FeedFragment extends Fragment{
 						     header.setVisibility(View.GONE);
 						     LinearLayout feedFrame = (LinearLayout) view.findViewById(R.id.feedFrame);
 						     feedFrame.setVisibility(View.VISIBLE);
-						     feedList.finishRefresh();
-						     feedList.finishLoadingMore();
+						     if(refresh){
+						    	 feedList.finishRefresh();
+						    	 refresh = false;
+						     }
+						     
 						}
 					}
 		      }
@@ -608,14 +613,14 @@ public class FeedFragment extends Fragment{
 		private void refreshList(RefreshableListView list) {
 			 Set<Integer> unique = new HashSet<Integer>();
 		     unique.addAll(MainNavActivity.networksList);
-		     size = MainNavActivity.networksList.size();
-			
-			 /*for(Integer i : unique){
+		     size = unique.size();
+		     refresh = true;
+			 for(Integer i : unique){
 	        	String uriUpdateFeeds = "feed/comment?write=" + MainNavActivity.getlastWriteFeedId() + "&categorised=" + MainNavActivity.getlastCategorisedFeedId() + "&network=" + i.intValue();
 				String typeStr = "0";	
 				GetFeed feedRequest = new GetFeed();
 				feedRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, typeStr, uriUpdateFeeds);
-		     }*/
+		     }
 			
 		}
 		

@@ -16,6 +16,7 @@
     <string name="goBack">Return to previous screen</string>
     <string name="no_search_results">There are no feeds available for those locations.</string>
     <string name="no_feed_options_selected">Please select at least one option.</string>
+    <string name="feed_header">News Feed</string>
     
 
     <string name="app_name">CasApp</string>

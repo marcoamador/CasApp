@@ -41,7 +41,7 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
 			convertView = inflater.inflate(R.layout.feed_item, null);
 		}
-		Log.d("getView", "p" + position);
+		//Log.d("getView", "p" + position);
 		TextView user = (TextView) convertView.findViewById(R.id.userName);
 		user.setText(newsFeedsObjects.get(position).getUser().getUsername());
 		
