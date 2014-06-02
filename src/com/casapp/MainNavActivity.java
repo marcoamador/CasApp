@@ -1,6 +1,8 @@
 package com.casapp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -51,13 +53,6 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	FragmentPagerAdapter adapterViewPager;
 	
 	
-	
-	
-	/*private static String username = "";
-	
-	private static int userPoints = 0;
-	private static String generatedUsername = "";
-	private static boolean anonymousMode = false;*/
 	private static boolean checkedIn = false;
 	private static int numFeeds = 0;
 	private static boolean loggedIn = false;
@@ -65,6 +60,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	public static ListView feedResultListView = null;
 	public static ArrayList<JourneyPath> feedsSubscribed = new ArrayList<JourneyPath>();
 	public static ArrayList<Integer> networksList = new ArrayList<Integer>();
+	public static ArrayList<NewsFeed> feed = new ArrayList<NewsFeed>();
 
 	//
 	
@@ -77,6 +73,87 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	
 	Dialog dialog;
 	static HashMap<String, Object> headers = new HashMap<String, Object>();
+	private static int lastCategorisedFeedId;
+	private static int lastWriteFeedId;
+	//FEED UTILS
+	
+	public static ArrayList<NewsFeed> getNewsFeeds() {
+		return feed;
+	}
+
+	public static void setNewsFeeds(ArrayList<NewsFeed> p_newsFeeds) {
+		feed = new ArrayList<NewsFeed>(p_newsFeeds);
+		Collections.sort(feed, new Comparator<NewsFeed>() {
+			@Override
+			public int compare(NewsFeed n1, NewsFeed n2) {
+				return n1.getCommentId() > n2.getCommentId() ? -1 : (n1.getCommentId() < n2.getCommentId() ? +1 : 0);
+			}
+		});
+		if(feed != null) {
+			boolean categorisedCheck = false;
+			boolean writeCheck = false;
+			for(int i = 0; i < getNewsFeeds().size(); i++) {
+				if(getNewsFeeds().get(i).getCommentType() == 0 && writeCheck == false) {
+					setlastWriteFeedId(feed.get(i).getCommentId());
+					writeCheck = true;
+				}
+				else if(getNewsFeeds().get(i).getCommentType() == 1 && categorisedCheck == false) {
+					setlastCategorisedFeedId(feed.get(i).getCommentId());
+					categorisedCheck = true;
+				}
+				if(writeCheck == true && categorisedCheck == true)
+					break;
+			}
+		}
+	}
+	
+	public static void addNewsFeeds(ArrayList<NewsFeed> p_newsFeeds) {
+		feed.addAll(p_newsFeeds);
+		Collections.sort(feed, new Comparator<NewsFeed>() {
+			@Override
+			public int compare(NewsFeed n1, NewsFeed n2) {
+				return n1.getCommentId() > n2.getCommentId() ? -1 : (n1.getCommentId() < n2.getCommentId() ? +1 : 0);
+			}
+		});
+		//Updates the 
+		if(feed != null) {
+			boolean categorisedCheck = false;
+			boolean writeCheck = false;
+			for(int i = 0; i < getNewsFeeds().size(); i++) {
+				if(getNewsFeeds().get(i).getCommentType() == 0 && writeCheck == false) {
+					setlastWriteFeedId(feed.get(i).getCommentId());
+					writeCheck = true;
+				}
+				else if(getNewsFeeds().get(i).getCommentType() == 1 && categorisedCheck == false) {
+					setlastCategorisedFeedId(feed.get(i).getCommentId());
+					categorisedCheck = true;
+				}
+				if(writeCheck == true && categorisedCheck == true)
+					break;
+			}
+		}
+	}
+
+	public static int getlastCategorisedFeedId() {
+		return lastCategorisedFeedId;
+	}
+
+	public static void setlastCategorisedFeedId(int lastFeedId) {
+		lastCategorisedFeedId = lastFeedId;
+	}
+	
+	public static int getlastWriteFeedId() {
+		return lastWriteFeedId;
+	}
+
+	public static void setlastWriteFeedId(int lastFeedId) {
+		lastWriteFeedId = lastFeedId;
+	}	
+	
+	
+	
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +170,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		headers.put("username", pref.getString(CasApp.PREF_USERNAME, ""));
 		headers.put("dateLogin", pref.getString(CasApp.PREF_DATELOGIN, ""));
 		headers.put("authToken", pref.getString(CasApp.PREF_AUTHTOKEN, ""));
+		loggedIn = pref.getBoolean(CasApp.PREF_LOGGEDIN, false);
 		
 		final ActionBar actionBar = getActionBar();
 		actionBar.setTitle("CasApp");
@@ -301,6 +379,9 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			UploadData uploadDataCheckOut = new UploadData();
 			uploadDataCheckOut.execute(typeStr, uriLogout);
 			setLoggedin(false);
+			SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME, MODE_PRIVATE);
+			pref.edit().putBoolean(CasApp.PREF_LOGGEDIN, false).putString(CasApp.PREF_AUTHTOKEN, "").putString(CasApp.PREF_DATELOGIN, "").putString(CasApp.PREF_USERNAME, "")
+			.putBoolean(CasApp.PREF_CHECKIN, false).putBoolean(CasApp.PREF_ANON, false).putString(CasApp.PREF_POINTS, "").putString(CasApp.PREF_PASSWORD, "").putString(CasApp.PREF_FEEDBACK_POINTS, "").commit();
 			Log.d("LOGOUT", "Calls upload data");
 			return true;
 		}	

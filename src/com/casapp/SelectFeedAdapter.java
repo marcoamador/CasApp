@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import data.objects.JourneyPath;
+import data.objects.Network;
 
 public class SelectFeedAdapter extends ArrayAdapter<JourneyPath> {
 	int resource;
@@ -37,6 +38,11 @@ public class SelectFeedAdapter extends ArrayAdapter<JourneyPath> {
 	    content.addAll(newlist);
 	    for(int i = 0; i < newlist.size(); i++)
 			activeRows.add(true);
+	    for(JourneyPath j : newlist){
+	    	for(Network n : j.getNetworks()){
+	    		MainNavActivity.networksList.add(n.getNetworkId());
+	    	}
+	    }
 	    this.notifyDataSetChanged();
 	}
 	

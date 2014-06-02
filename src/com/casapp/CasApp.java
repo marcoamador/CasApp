@@ -47,7 +47,9 @@ public class CasApp extends Application{
 	public static final String PREF_LATITUDE = "latitude";
 	public static final String PREF_LONGITUDE = "longitude";
 	public static final String PREF_POINTS = "points";
+	public static final String PREF_LOGGEDIN = "loggedin";
 	public static final String PREF_FEEDBACK_POINTS = "feedbackPoints";
+	public static final String PREF_ANON = "anonymous";
 	public static final int CONNECTION_TIMEOUT = 20000;
 	public static final int SO_TIMEOUT = 20000;
 	public static final int TIMEOUT = 20000;

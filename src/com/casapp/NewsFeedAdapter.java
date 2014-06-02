@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,12 @@ import android.widget.TextView;
 import data.objects.NewsFeed;
 
 public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
-	private ArrayList<NewsFeed> newsFeedsObjects = new ArrayList<NewsFeed>();
+	private List<NewsFeed> newsFeedsObjects = new ArrayList<NewsFeed>();
 	private SimpleDateFormat hourMinutesFormat = new SimpleDateFormat("HH:mm");
 	
 	public NewsFeedAdapter(Context context, int textViewResourceId, List<NewsFeed> objects) {
 		super(context, textViewResourceId, objects);
-		newsFeedsObjects = new ArrayList<NewsFeed>(objects);
+		newsFeedsObjects = objects;
 	}		
 	
 	@Override
@@ -40,7 +41,7 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
 			convertView = inflater.inflate(R.layout.feed_item, null);
 		}
-		
+		Log.d("getView", "p" + position);
 		TextView user = (TextView) convertView.findViewById(R.id.userName);
 		user.setText(newsFeedsObjects.get(position).getUser().getUsername());
 		
@@ -124,6 +125,14 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 	public void insert(NewsFeed object, int index) {
 		// TODO Auto-generated method stub
 		super.insert(object, index);
+	}
+
+	public void updateList(ArrayList<NewsFeed> objects) {
+		newsFeedsObjects.clear();
+		newsFeedsObjects.addAll(objects);
+		notifyDataSetChanged();
+		//Log.d("avisou", String.valueOf(newsFeedsObjects.size()));
+
 	}
 
 	

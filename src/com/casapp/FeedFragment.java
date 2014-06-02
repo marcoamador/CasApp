@@ -2,11 +2,16 @@ package com.casapp;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.casapp.RefreshableListView.onListLoadMoreListener;
+import com.casapp.RefreshableListView.onListRefreshListener;
 import com.google.gson.reflect.TypeToken;
 
 import data.objects.JourneyPath;
 import data.objects.Network;
+import data.objects.NewsFeed;
 import data.objects.Stop;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -26,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -35,8 +41,12 @@ public class FeedFragment extends Fragment{
 	    View view;
 	    ListView feedResultList;
 	    ListView selectFeedList;
+	    RefreshableListView feedList;
 	    SelectFeedAdapter selectFeedAdapter;
 	    FeedResultsAdapter feedResultAdapter;
+	    NewsFeedAdapter feedAdapter;
+	    ProgressBar bar;
+	    int size = 0;
 
 	    // newInstance constructor for creating fragment with arguments
 	    public static FeedFragment newInstance() {
@@ -95,6 +105,31 @@ public class FeedFragment extends Fragment{
 		    selectFeedAdapter = new SelectFeedAdapter(this.getActivity(), R.layout.custom_listview_current_feeds, MainNavActivity.feedsSubscribed);
 		    selectFeedList.setAdapter(selectFeedAdapter);
 		    
+		    
+		    feedList = (RefreshableListView) view.findViewById(R.id.RefreshList);
+		    feedAdapter = new NewsFeedAdapter(this.getActivity(), R.layout.feed_item, MainNavActivity.feed);
+		    feedList.setAdapter(feedAdapter);
+		    feedList.setOnListRefreshListener(new onListRefreshListener() {
+				
+				@Override
+				public void Refresh(RefreshableListView list) {
+					Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+					refreshList(list);
+					
+				}
+			});//---------------------------------------------------------------Important
+			feedList.setOnListLoadMoreListener(new onListLoadMoreListener() {
+				
+				@Override
+				public void LoadMore(RefreshableListView list) {
+					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
+					refreshList(list);
+					
+				}
+			});
+		    
+		    
+		    
 		  
 	        
 	        final Button addManualFeed = (Button) view.findViewById(R.id.ManualAddFeed);
@@ -139,14 +174,30 @@ public class FeedFragment extends Fragment{
 				        feedResultsFrame.setVisibility(View.GONE);
 				        noFeedResultsFrame.setVisibility(View.GONE);
 			        }else{
-			        	addFeedManuallyFrame.setVisibility(View.GONE);
-						addFeedGpsFrame.setVisibility(View.GONE);
-			        	noFeedsSelected.setVisibility(View.GONE);
-			        	feedFrame.setVisibility(View.VISIBLE);
-						selectFeedFrame.setVisibility(View.GONE);
-				        receiveFeedFrame.setVisibility(View.GONE);
-				        feedResultsFrame.setVisibility(View.GONE);
-				        noFeedResultsFrame.setVisibility(View.GONE);
+			        	if(feedFrame.getVisibility() != View.VISIBLE){
+			        		addFeedManuallyFrame.setVisibility(View.GONE);
+							addFeedGpsFrame.setVisibility(View.GONE);
+				        	noFeedsSelected.setVisibility(View.GONE);
+				        	feedFrame.setVisibility(View.VISIBLE);
+							selectFeedFrame.setVisibility(View.GONE);
+					        receiveFeedFrame.setVisibility(View.GONE);
+					        feedResultsFrame.setVisibility(View.GONE);
+					        noFeedResultsFrame.setVisibility(View.GONE);
+					        
+					        Set<Integer> unique = new HashSet<Integer>();
+					        unique.addAll(MainNavActivity.networksList);
+					        size = unique.size();
+					        Log.d("size inicial", String.valueOf(size));
+					        
+					        for(Integer i : unique){
+					        	String uriUpdateFeeds = "feed/comment?write=" + MainNavActivity.getlastWriteFeedId() + "&categorised=" + MainNavActivity.getlastCategorisedFeedId() + "&network=" + i.intValue();
+								String typeStr = "0";	
+								
+								GetFeed feedRequest = new GetFeed();
+								feedRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, typeStr, uriUpdateFeeds);
+					        }
+			        	}   
+				        
 			        }
 					return;
 				}
@@ -274,17 +325,14 @@ public class FeedFragment extends Fragment{
 						}
 						
 						if(readyStart == true && readyEnd == true) {
-							final String uriPlanJourney = "journey/plan?origin=" + origin.getName().replace(" ", "%20") + "&destination=" + destination.getName().replace(" ", "%20");
+							final String uriPlanJourney = "journey/search?origin=" + origin.getName().replace(" ", "%20") + "&destination=" + destination.getName().replace(" ", "%20");
 							
 							String typeStr = "0";
-							
+							addFeedManuallyFrame.setVisibility(View.GONE);
+							feedResultsFrame.setVisibility(View.VISIBLE);
 							
 							SearchFeedTask searchFeed = new SearchFeedTask();
 							searchFeed.execute(typeStr, uriPlanJourney);	
-							
-							
-							
-		            		
 		            		Log.d("PLANJOURNEY", "pathsResults " + MainNavActivity.getFeedResults().size());
 		            		
 		            			
@@ -384,6 +432,8 @@ public class FeedFragment extends Fragment{
 		    @Override
 		    protected void onPreExecute() {
 		        super.onPreExecute();
+		        LinearLayout linlaHeaderProgress = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressFeedResults);
+		        linlaHeaderProgress.setVisibility(View.VISIBLE);
 		    }
 
 		    
@@ -448,12 +498,13 @@ public class FeedFragment extends Fragment{
 						final LinearLayout addFeedManuallyFrame = (LinearLayout) view.findViewById(R.id.AddFeedManuallyFrame);
 				        final LinearLayout feedResultsFrame = (LinearLayout) view.findViewById(R.id.FeedResultsFrame);
 				        final LinearLayout noFeedResultsFrame = (LinearLayout) view.findViewById(R.id.noFeedResultsFrame);
+				        final LinearLayout linlaHeaderProgressFeedResults = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressFeedResults);
 						if(MainNavActivity.feedResults.size() > 0){
-					        addFeedManuallyFrame.setVisibility(View.GONE);
-					        feedResultsFrame.setVisibility(View.VISIBLE);
+							linlaHeaderProgressFeedResults.setVisibility(View.GONE);
 							feedResultAdapter.updateList(MainNavActivity.feedResults);
 						}else{
-							addFeedManuallyFrame.setVisibility(View.GONE);
+							feedResultsFrame.setVisibility(View.GONE);
+							linlaHeaderProgressFeedResults.setVisibility(View.GONE);
 							noFeedResultsFrame.setVisibility(View.VISIBLE);
 							
 						}
@@ -476,6 +527,101 @@ public class FeedFragment extends Fragment{
 					}		*/		
 		      }
 		}	
+		
+		
+		class GetFeed extends AsyncTask<String, String, String> {
+
+		    @Override
+		    protected void onPreExecute() {
+		        super.onPreExecute();
+		        LinearLayout header = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressFeed);
+		        header.setVisibility(View.VISIBLE);
+		    }
+
+		    
+		    @SuppressWarnings("unchecked")
+			@Override
+		    protected String doInBackground(String... params) {
+		    	String typeStr = params[0];
+		    	int type = Integer.parseInt(typeStr);
+		    	String ret = "";
+		    	
+		    	Log.d("NEWSFEED", "UPLOADDATA DOINBACKGROUND - type= " + typeStr);
+		    	
+				if (isOnline()) {
+	    			try {
+	    				switch(type) {
+	    					case 0:
+	    						String uriUpdateNewsFeed= params[1];
+	    						ArrayList<NewsFeed> t = CasApp.doGet(getActivity(), uriUpdateNewsFeed, MainNavActivity.headers, new TypeToken<ArrayList<NewsFeed>>() {}.getType());
+	    						size--;
+	    						if(MainNavActivity.getlastWriteFeedId() != 0 || MainNavActivity.getlastCategorisedFeedId() != 0)
+	    							MainNavActivity.addNewsFeeds(t);
+	    						else 
+	    							MainNavActivity.setNewsFeeds(t);
+	    						ret = "ok updatenewsfeed";
+	    						Log.d("tamanho", String.valueOf(MainNavActivity.feed.size()));
+	    						handler.sendEmptyMessage(2);
+	    						break;
+	    				}
+	    			}
+	    			catch(Exception e) {
+						handler.sendEmptyMessage(0);
+						return e.getMessage();
+	    			}
+				}
+				else {
+		    		handler.sendEmptyMessage(1);
+		    		return "ok";					
+				}
+				Log.d("NEWSFEED", "UPLOADDATA DOINBACKGROUND - ret= " + ret);
+				return ret;
+		    }
+		    
+			   @Override
+		      protected void onPostExecute(String result) {
+					super.onPostExecute(result);				
+					Log.d("NEWSFEED", "UPLOADDATA POSTEXECUTE - result= " + result);
+					
+					//Checks if there was an exception
+					if(!result.startsWith("ok")) {
+						Log.d("NEWSFEED", "UPLOADDATA POSTEXECUTE - Exception");
+						Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+					}
+					else if(result.contains("updatenewsfeed")) {
+						Log.d("NEWSFEED", "UPLOADDATA POSTEXECUTE - updatenewsfeed is empty? " + MainNavActivity.feed.isEmpty() + " " + size);
+						Log.d("tamanho 2", String.valueOf(MainNavActivity.feed.size()));
+						if(size == 0){
+							 feedAdapter.updateList(MainNavActivity.feed);
+							 LinearLayout header = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressFeed);
+						     header.setVisibility(View.GONE);
+						     LinearLayout feedFrame = (LinearLayout) view.findViewById(R.id.feedFrame);
+						     feedFrame.setVisibility(View.VISIBLE);
+						     feedList.finishRefresh();
+						     feedList.finishLoadingMore();
+						}
+					}
+		      }
+		}	
+		
+		
+		private void refreshList(RefreshableListView list) {
+			 Set<Integer> unique = new HashSet<Integer>();
+		     unique.addAll(MainNavActivity.networksList);
+		     size = MainNavActivity.networksList.size();
+			
+			 /*for(Integer i : unique){
+	        	String uriUpdateFeeds = "feed/comment?write=" + MainNavActivity.getlastWriteFeedId() + "&categorised=" + MainNavActivity.getlastCategorisedFeedId() + "&network=" + i.intValue();
+				String typeStr = "0";	
+				GetFeed feedRequest = new GetFeed();
+				feedRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, typeStr, uriUpdateFeeds);
+		     }*/
+			
+		}
+		
+		
+		
+		
 		
 		//---------- IS ONLINE -------------
 		//Checks if there is internet connection

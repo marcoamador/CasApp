@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+     <!-- <string name="urixml">http://10.13.37.86/Service.svc/</string> -->
      <string name="urixml">http://192.168.1.67/Service.svc/</string>
      <string name="loadingMessage">Loading</string>
     <string name="no_internet">No internet connection!</string>

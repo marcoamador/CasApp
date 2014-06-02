@@ -349,6 +349,8 @@ public class LoginActivity extends FragmentActivity {
 			        edit.putString(CasApp.PREF_USERNAME, userDefinitions.getUsername());
 			        edit.putString(CasApp.PREFS_NAME, userDefinitions.getName());
 			        edit.putString(CasApp.PREF_PASSWORD, mPassword);
+			        edit.putBoolean(CasApp.PREF_LOGGEDIN, true);
+			        edit.putBoolean(CasApp.PREF_ANON, userDefinitions.isAnonymous());
 			        edit.putString(CasApp.PREF_POINTS, Integer.toString(userDefinitions.getTotalPoints()));
 			        edit.putString(CasApp.PREF_FEEDBACK_POINTS, Integer.toString(userDefinitions.getFeedbackPoints()));
 			        edit.commit();

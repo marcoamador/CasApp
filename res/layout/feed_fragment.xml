@@ -59,6 +59,26 @@
         android:orientation="vertical"
         android:visibility="gone"
         >
+        
+        <LinearLayout
+        android:id="@+id/linlaHeaderProgressFeedResults"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        
+         <ProgressBar
+            android:id="@+id/pbHeaderProgressFeedResults"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            
+             >
+        </ProgressBar>
+        
+    	</LinearLayout>
 
        <TextView
             android:id="@+id/search_results_header"
@@ -398,9 +418,36 @@
     <LinearLayout
         android:id="@+id/feedFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical" 
+        android:visibility="gone"
         >
+        
+        
+        
+        <LinearLayout
+        android:id="@+id/linlaHeaderProgressFeed"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        
+         <ProgressBar
+            android:id="@+id/pbHeaderProgressFeed"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            
+             >
+        </ProgressBar>
+        
+    	</LinearLayout>
+        
+      
+        
 	        <com.casapp.RefreshableListView
 				  android:id="@+id/RefreshList"
 				  style="@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center"
