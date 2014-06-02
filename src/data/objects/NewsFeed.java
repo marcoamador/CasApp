@@ -18,6 +18,7 @@ public class NewsFeed {
 	public int idCategorisedType;
 	public User user;
 	public Line line;
+	public int networkId;
 	//public Boolean star;
 	public int commentPoints;
 	public int discreteClassificationCategorisedComment;
@@ -32,6 +33,7 @@ public class NewsFeed {
         //star = false;
         commentPoints = 0;
         idCategorisedType = 0;
+        networkId = 0;
         date = "";
         discreteClassificationCategorisedComment = -1;
 	}

@@ -75,7 +75,7 @@
             android:textSize="15sp" >
         </TextView>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/addCheckinManualOrigin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -84,7 +84,9 @@
             android:layout_marginTop="30dp"
             android:gravity="left"
             android:hint="@string/originMyLocation"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white">
+            <requestFocus/>
+            </AutoCompleteTextView>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -102,7 +104,7 @@
                 android:background="@drawable/swap" />
         </LinearLayout>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/addCheckinManualDestination"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -155,6 +157,12 @@
             android:text="@string/checkin_results_header"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+        
+        <View 
+           android:layout_marginTop="2dp"
+		   android:layout_width="fill_parent"
+		   android:layout_height="1dp"       
+		   android:background="#33B5E5" />
 
         <ListView
             android:id="@+id/checkInResultslist"

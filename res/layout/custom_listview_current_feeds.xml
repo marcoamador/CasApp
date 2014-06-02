@@ -7,7 +7,7 @@
         android:weightSum="3.7" >
         
         <TextView
-            android:id="@+id/origin"
+            android:id="@+id/feeds_origin"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginRight="5dp"
@@ -29,7 +29,7 @@
             android:textStyle="bold" />
         
         <TextView 
-        android:id="@+id/destination"
+        android:id="@+id/feeds_destination"
         android:text="@string/destination"
         android:layout_weight="1.5"
         android:textSize="15sp"
@@ -45,7 +45,7 @@
             android:id="@+id/switchFeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:checked="false"
             android:gravity="right"
             android:textOff="@string/switch_text_no"

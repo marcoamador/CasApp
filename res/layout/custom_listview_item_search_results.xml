@@ -11,7 +11,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginRight="15dp"
-            android:layout_weight="1.50"
+            android:layout_weight="1.75"
             android:gravity="center_vertical|right"
             android:text="@string/origin"
             android:textColor="@android:color/white"
@@ -28,28 +28,28 @@
             android:textSize="15sp"
             android:textStyle="bold" />
         
-        <TextView 
-        android:id="@+id/destination"
-        android:text="@string/destination"
-        android:layout_weight="1.5"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_width="0dp"
-        android:layout_marginLeft="15dp"
-        android:layout_height="fill_parent"
-        android:textColor="@android:color/white"
-        android:gravity="center_vertical|left"
-        />
+        <TextView
+            android:id="@+id/destination"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1.75"
+            android:gravity="center_vertical|left"
+            android:text="@string/destination"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
+            android:layout_marginRight="15dp"
             android:focusableInTouchMode="false"
             android:gravity="right"
             android:text=""
-            android:layout_marginLeft="50dp" />
+            android:layout_marginLeft="25dp" />
          
     </LinearLayout>
 

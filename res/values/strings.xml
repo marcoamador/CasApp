@@ -12,6 +12,9 @@
     <string name="registration_successful">Registration completed.</string>
     <string name="usernameHint">Username</string>
     <string name="error_invalid_username">Invalid username</string>
+    <string name="goBack">Return to previous screen</string>
+    <string name="no_search_results">There are no feeds available for those locations.</string>
+    <string name="no_feed_options_selected">Please select at least one option.</string>
     
 
     <string name="app_name">CasApp</string>
@@ -153,5 +156,296 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_add_feed_by_gps">AddFeedByGpsActivity</string>
     <string name="title_activity_add_feed_manually">AddFeedManuallyActivity</string>
+    
+    
+    <!-- ATMOSPHERE -->
+    <string-array name="temperature_array">
+        <item>Freezing</item>
+        <item>Cold</item>
+        <item>Good</item>
+        <item>Warm</item>
+        <item>Hot</item>
+    </string-array>
+    <string-array name="temperature_rated_array">
+        <item>This vehicle is freezing.</item>
+        <item>This vehicle is cold.</item>
+        <item>This vehicle has a good temperature.</item>
+        <item>This vehicle is warm.</item>
+        <item>This vehicle is hot.</item>
+    </string-array>
+    <string-array name="temperature_feed_array">
+        <item>This vehicle is freezing.</item>
+        <item>This vehicle is cold.</item>
+        <item>This vehicle has a good temperature.</item>
+        <item>This vehicle is warm.</item>
+        <item>This vehicle is hot.</item>
+    </string-array>       
+    
+	<string-array name="noise_array">
+        <item>Silent</item>
+        <item>Calm</item>
+        <item>Normal</item>
+        <item>Noisy</item>
+        <item>Loud</item>
+    </string-array>
+    <string-array name="noise_rated_array">
+        <item>This vehicle is silent.</item>
+        <item>This vehicle is calm.</item>
+        <item>This vehicle is with normal noise.</item>
+        <item>This vehicle is noisy.</item>
+        <item>This vehicle is loud.</item>
+    </string-array>
+    <string-array name="noise_feed_array">
+        <item>This vehicle is silent.</item>
+        <item>This vehicle is calm.</item>
+        <item>This vehicle is with normal noise.</item>
+        <item>This vehicle is noisy.</item>
+        <item>This vehicle is loud.</item>
+    </string-array>   
+    
+    <string-array name="crowding_array">
+        <item>Empty</item>
+        <item>Free space</item>
+        <item>Half-full</item>
+        <item>Tight</item>
+        <item>Packed</item>
+    </string-array>
+    <string-array name="crowding_rated_array">
+        <item>This vehicle is empty.</item>
+        <item>This vehicle has free space.</item>
+        <item>This vehicle is half-full.</item>
+        <item>This vehicle is tight.</item>
+        <item>This vehicle is packed.</item>
+    </string-array>
+    <string-array name="crowding_feed_array">
+        <item>This vehicle is empty.</item>
+        <item>This vehicle has free space.</item>
+        <item>This vehicle is half-full.</item>
+        <item>This vehicle is tight.</item>
+        <item>This vehicle is packed.</item>
+    </string-array>   
+    
+    <string-array name="seating_array">
+        <item>You wish</item>
+        <item>No seats</item>
+        <item>Few seats</item>
+        <item>Some seats</item>
+        <item>Many seats</item>
+    </string-array>
+    <string-array name="seating_rated_array">
+        <item>This vehicle has no seats at all.</item>
+        <item>This vehicle has no seats available.</item>
+        <item>This vehicle has few seats available.</item>
+        <item>This vehicle has some seats available.</item>
+        <item>This vehicle has many seats available.</item>
+    </string-array>
+    <string-array name="seating_feed_array">
+        <item>This vehicle has no seats at all.</item>
+        <item>This vehicle has no seats available.</item>
+        <item>This vehicle has few seats available.</item>
+        <item>This vehicle has some seats available.</item>
+        <item>This vehicle has many seats available.</item>
+    </string-array> 
+    
+    <string-array name="cleanliness_array">
+        <item>Filthy</item>
+        <item>Dirty</item>
+        <item>Ok</item>
+        <item>Clean</item>
+        <item>Sparkling</item>
+    </string-array>
+    <string-array name="cleanliness_rated_array">
+        <item>This vehicle\'s is filthy.</item>
+        <item>This vehicle\'s is dirty.</item>
+        <item>This vehicle\'s is ok.</item>
+        <item>This vehicle\'s is clean.</item>
+        <item>This vehicle\'s is sparkling.</item>
+    </string-array>
+    <string-array name="cleanliness_feed_array">
+         <item>This vehicle\'s is filthy.</item>
+        <item>This vehicle\'s is dirty.</item>
+        <item>This vehicle\'s cleanliness is ok.</item>
+        <item>This vehicle\'s is clean.</item>
+        <item>This vehicle\'s is sparkling.</item>
+    </string-array>      
+    
+    <string-array name="scenery_array">
+        <item>Grim</item>
+        <item>Unpleasant</item>
+        <item>Ok</item>
+        <item>Pretty</item>
+        <item>Beautiful</item>
+    </string-array>
+    <string-array name="scenery_rated_array">
+        <item>This route\'s scenery is grim.</item>
+        <item>This route\'s scenery is unpleasant.</item>
+        <item>This route\'s scenery is ok.</item>
+        <item>This route\'s scenery is pretty.</item>
+        <item>This route\'s scenery is beautiful.</item>
+    </string-array>
+    <string-array name="scenery_feed_array">
+        <item>This route\'s scenery is grim.</item>
+        <item>This route\'s scenery is unpleasant.</item>
+        <item>This route\'s scenery is ok.</item>
+        <item>This route\'s scenery is pretty.</item>
+        <item>This route\'s scenery is beautiful.</item>
+    </string-array>
+    
+    <string-array name="perceived_security_array">
+        <item>Very insecure</item>
+        <item>Insecure</item>
+        <item>Ok</item>
+        <item>Secure</item>
+        <item>Very secure</item>
+    </string-array>
+    <string-array name="perceived_security_rated_array">
+        <item>This route is very insecure.</item>
+        <item>This route is insecure.</item>
+        <item>This route\'s security is ok.</item>
+        <item>This route is secure.</item>
+        <item>This route is very secure.</item>
+    </string-array>
+    <string-array name="perceived_security_feed_array">
+        <item>This route is very insecure.</item>
+        <item>This route is insecure.</item>
+        <item>This route\'s security is ok.</item>
+        <item>This route is secure.</item>
+        <item>This route is very secure.</item>
+    </string-array>
+    
+    
+    <!-- PROGRESS -->
+    
+    <string-array name="speed_array">
+        <item>Stationary</item>
+        <item>Slow</item>
+        <item>Reasonable</item>
+        <item>Quick</item>
+        <item>Fast</item>
+    </string-array>
+    <string-array name="speed_rated_array">
+        <item>This vehicle\'s is stationary.</item>
+        <item>This vehicle\'s is slow.</item>
+        <item>This vehicle\'s is reasonable quick.</item>
+        <item>This vehicle\'s is quick.</item>
+        <item>This vehicle\'s is fast.</item>
+    </string-array>
+    <string-array name="speed_feed_array">
+        <item>This vehicle\'s is stationary.</item>
+        <item>This vehicle\'s is slow.</item>
+        <item>This vehicle\'s is reasonable quick.</item>
+        <item>This vehicle\'s is quick.</item>
+        <item>This vehicle\'s is fast.</item>
+    </string-array>      
+    
+    <string-array name="arrived_array">
+        <item>Severely delayed</item>
+        <item>Delayed</item>
+        <item>On-time</item>
+        <item>Early</item>
+        <item>Very early</item>
+    </string-array>
+    <string-array name="arrived_rated_array">
+        <item>This vehicle\'s arrive at stop is severely delayed.</item>
+        <item>This vehicle\'s arrive at stop is delayed.</item>
+        <item>This vehicle\'s arrive at stop is on-time.</item>
+        <item>This vehicle\'s arrive at stop is early.</item>
+        <item>This vehicle\'s arrive at stop is very early.</item>
+    </string-array>
+    <string-array name="arrived_feed_array">
+        <item>This vehicle\'s arrive at stop is severely delayed.</item>
+        <item>This vehicle\'s arrive at stop is delayed.</item>
+        <item>This vehicle\'s arrive at stop is on-time.</item>
+        <item>This vehicle\'s arrive at stop is early.</item>
+        <item>This vehicle\'s arrive at stop is very early.</item>
+    </string-array>      
+    
+    <string-array name="progress_array">
+        <item>Severely delayed</item>
+        <item>Delayed</item>
+        <item>On-time</item>
+        <item>Running early</item>
+        <item>Running too early</item>
+    </string-array>
+    <string-array name="progress_rated_array">
+        <item>This vehicle\'s progress is severely delayed.</item>
+        <item>This vehicle\'s progress is delayed.</item>
+        <item>This vehicle\'s progress is on-time.</item>
+        <item>This vehicle\'s progress is running early.</item>
+        <item>This vehicle\'s progress is running too early.</item>
+    </string-array>
+    <string-array name="progress_feed_array">
+        <item>This vehicle\'s progress is severely delayed.</item>
+        <item>This vehicle\'s progress is delayed.</item>
+        <item>This vehicle\'s progress is on-time.</item>
+        <item>This vehicle\'s progress is running early.</item>
+        <item>This vehicle\'s progress is running too early.</item>
+    </string-array>       
+    
+    <string-array name="similar_array">
+        <item>Far behind</item>
+        <item>Close behind</item>
+        <item>Close ahead</item>
+        <item>Far ahead</item>
+    </string-array>
+    <string-array name="similar_rated_array">
+        <item>A vehicle similar to this one is far behind.</item>
+        <item>A vehicle similar to this one is close behind.</item>
+        <item>A vehicle similar to this one is close ahead.</item>
+        <item>A vehicle similar to this one is far ahead.</item>
+    </string-array>
+    <string-array name="similar_feed_array">
+        <item>A vehicle similar to this one is far behind.</item>
+        <item>A vehicle similar to this one is close behind.</item>
+        <item>A vehicle similar to this one is close ahead.</item>
+        <item>A vehicle similar to this one is far ahead.</item>
+    </string-array>     
+    
+    
+    <!-- DRIVER -->
+    
+    <string-array name="courtesy_array">
+        <item>Rude</item>
+        <item>Impolite</item>
+        <item>Adequate</item>
+        <item>Nice</item>
+        <item>Pleasant</item>
+    </string-array>
+    <string-array name="courtesy_rated_array">
+        <item>The driver is rude.</item>
+        <item>The driver is impolite.</item>
+        <item>The driver\'s courtesy is adequate.</item>
+        <item>The driver is nice.</item>
+        <item>The driver is pleasant.</item>
+    </string-array>
+    <string-array name="courtesy_feed_array">
+        <item>The driver is rude.</item>
+        <item>The driver is impolite.</item>
+        <item>The driver\'s courtesy is adequate.</item>
+        <item>The driver is nice.</item>
+        <item>The driver is pleasant.</item>
+    </string-array>
+	
+	<string-array name="smoothness_array">
+        <item>Dangerous</item>
+        <item>Rough</item>
+        <item>Reasonable</item>
+        <item>Nice</item>
+        <item>Excellent</item>
+    </string-array>
+    <string-array name="smoothness_rated_array">
+        <item>The driver\'s driving smoothness is dangerous.</item>
+        <item>The driver\'s driving smoothness is rough.</item>
+        <item>The driver\'s driving smoothness is reasonable.</item>
+        <item>The driver\'s driving smoothness is nice.</item>
+        <item>The driver\'s driving smoothness is excellent.</item>
+    </string-array>
+    <string-array name="smoothness_feed_array">
+        <item>The driver\'s driving smoothness is dangerous.</item>
+        <item>The driver\'s driving smoothness is rough.</item>
+        <item>The driver\'s driving smoothness is reasonable.</item>
+        <item>The driver\'s driving smoothness is nice.</item>
+        <item>The driver\'s driving smoothness is excellent.</item>
+    </string-array>	
 
 </resources>

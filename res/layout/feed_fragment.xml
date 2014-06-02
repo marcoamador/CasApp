@@ -69,6 +69,12 @@
             android:text="@string/search_results"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+       
+       <View 
+           android:layout_marginTop="2dp"
+		   android:layout_width="fill_parent"
+		   android:layout_height="1dp"       
+		   android:background="#33B5E5" />
 
         <ListView
             android:id="@+id/manualAddFeedlist"
@@ -79,21 +85,77 @@
             android:choiceMode="multipleChoice" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="0.20"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
             android:gravity="center|bottom"
             android:orientation="vertical" >
 
             <Button
                 android:id="@+id/manualResultsAddFeed"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="80dp"
                 android:background="@drawable/button_selected"
                 android:drawableLeft="@drawable/plus"
                 android:drawablePadding="-50dp"
                 android:paddingLeft="60dip"
                 android:text="@string/feed_gpsResultsAdd"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/noFeedResultsFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+       <TextView
+            android:id="@+id/search_results_header_2"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/search_results"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+       
+        <TextView
+            android:id="@+id/search_results_header_3"
+            android:layout_width="fill_parent"
+          
+            android:layout_height="150dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="@string/no_search_results"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+        
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/goBackButtonFeed"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/back"
+                android:drawablePadding="-35dp"
+                android:paddingLeft="60dip"
+                android:text="@string/goBack"
                 android:textSize="16sp"
                 android:textStyle="bold" >
             </Button>
@@ -118,7 +180,7 @@
              
              android:orientation="vertical" >
              
-              <EditText
+            <AutoCompleteTextView  
             android:id="@+id/addFeedManualOrigin"
             android:layout_width="fill_parent"
             android:layout_marginLeft="20dp"
@@ -127,7 +189,10 @@
             android:gravity="left"
             android:layout_height="wrap_content"
             android:hint="@string/origin"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white">
+            
+                <requestFocus/>
+            </AutoCompleteTextView>
               
              <LinearLayout
                  android:layout_width="fill_parent"
@@ -147,7 +212,7 @@
 
              </LinearLayout>
              
-             <EditText
+            <AutoCompleteTextView  
             android:id="@+id/addFeedManualDestination"
             android:layout_width="fill_parent"
             android:layout_marginLeft="20dp"
@@ -170,7 +235,7 @@
              android:orientation="vertical" >
 
              <Button
-                 android:id="@+id/gpsResultsAddFeed"
+                 android:id="@+id/ManualAddFeed"
                  android:layout_width="fill_parent"
                  android:layout_height="fill_parent"
                  
@@ -191,7 +256,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone" 
+        >
 
         <TextView
             android:layout_width="fill_parent"
@@ -245,7 +311,7 @@
         android:visibility="gone" >
 
         <TextView
-            android:id="@+id/search_results_header"
+            android:id="@+id/gps_search_results_header"
             android:layout_width="fill_parent"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
@@ -253,6 +319,13 @@
             android:text="@string/check_in_gps"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+        
+        <View 
+           android:layout_marginTop="2dp"
+		   android:layout_width="fill_parent"
+		   android:layout_height="1dp"       
+		   android:background="#33B5E5" />
+        
 
         <ListView
             android:id="@+id/gpsResultsFeedlist"

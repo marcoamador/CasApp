@@ -26,12 +26,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TabPageIndicator;
 
+import data.objects.JourneyPath;
 import data.objects.NewsFeed;
 import data.objects.User;
 
@@ -59,6 +61,10 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	private static boolean checkedIn = false;
 	private static int numFeeds = 0;
 	private static boolean loggedIn = false;
+	public static ArrayList<JourneyPath> feedResults = new ArrayList<JourneyPath>();
+	public static ListView feedResultListView = null;
+	public static ArrayList<JourneyPath> feedsSubscribed = new ArrayList<JourneyPath>();
+	public static ArrayList<Integer> networksList = new ArrayList<Integer>();
 
 	//
 	
@@ -70,7 +76,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 	public static float GPS_MIN_DISTANCE = 0;//meters
 	
 	Dialog dialog;
-	HashMap<String, Object> headers = new HashMap<String, Object>();
+	static HashMap<String, Object> headers = new HashMap<String, Object>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -536,7 +542,15 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		public void onProviderDisabled(String provider) {
 			// TODO Auto-generated method stub
 			
-		}	
+		}
+
+		public static ArrayList<JourneyPath> getFeedResults() {
+			return feedResults;
+		}
+
+		public static void setFeedResults(ArrayList<JourneyPath> feedResults) {
+			MainNavActivity.feedResults = feedResults;
+		}
 		
 	
 
