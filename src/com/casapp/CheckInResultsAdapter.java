@@ -1,50 +1,41 @@
 package com.casapp;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import data.objects.JourneyPath;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import data.objects.JourneyPath;
 
-public class FeedResultsAdapter extends ArrayAdapter<JourneyPath> {
+public class CheckInResultsAdapter extends ArrayAdapter<JourneyPath> {
 	int resource;
-	private ArrayList<Boolean> selectedRows;
 	public List<JourneyPath> content;
 	
-	public FeedResultsAdapter(Context context, int resource, List<JourneyPath> objects) {
+	public CheckInResultsAdapter(Context context, int resource, List<JourneyPath> objects) {
 		super(context, resource, objects);
 		this.resource = resource;
 		content = objects;
-		selectedRows = new ArrayList<Boolean>();
-		for(int i = 0; i < objects.size(); i++)
-			selectedRows.add(false);
 	}
 	
-	public void setSelectedRows(int position) {
-		selectedRows.set(position, !selectedRows.get(position));
+	public void setSelectedRow(int position) {
+		CommentFragment.selectedRow = position;
 		notifyDataSetChanged();
 	}
 	
 	public void updateList(List<JourneyPath> newlist) {
 	    content.clear();
 	    content.addAll(newlist);
-	    selectedRows.clear();
-	    for(int i = 0; i < newlist.size(); i++)
-			selectedRows.add(false);
 	    this.notifyDataSetChanged();
 	}
 	
-	public ArrayList<Boolean> getSelectedRows() {
-		return selectedRows;
+	public int getSelectedRow() {
+		return CommentFragment.selectedRow;
 	}	
 	
 	@Override
@@ -53,7 +44,6 @@ public class FeedResultsAdapter extends ArrayAdapter<JourneyPath> {
         LinearLayout feedResultView;
         //Get the current alert object
         JourneyPath jp = getItem(position);
- 
         //Inflate the view
         if(convertView==null)
         {
@@ -70,24 +60,29 @@ public class FeedResultsAdapter extends ArrayAdapter<JourneyPath> {
         
         TextView jpOrigin =(TextView)feedResultView.findViewById(R.id.origin);
         TextView jpDestination =(TextView)feedResultView.findViewById(R.id.destination);
-        CheckBox jpChecked = (CheckBox)feedResultView.findViewById(R.id.checkbox);
+        final CheckBox jpChecked = (CheckBox)feedResultView.findViewById(R.id.checkbox);
  
         //Assign the appropriate data from the object
         jpOrigin.setText(jp.getOrigin().getName());
         jpDestination.setText(jp.getDestination().getName());
-        jpChecked.setChecked(selectedRows.get(position));
+        if(position == CommentFragment.selectedRow){
+        	jpChecked.setChecked(true);
+        }else
+        	jpChecked.setChecked(false);
         
         jpChecked.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				CheckBox cb = (CheckBox) v;
-				//cb.setSelected(!cb.isChecked());
-				//setSelectedRows(position);
-				cb.setChecked(false);
+				jpChecked.setChecked(false);
+				
 			}
 		});
- 
+        
+        
+        
+        
         return feedResultView;
     }
+	
 }

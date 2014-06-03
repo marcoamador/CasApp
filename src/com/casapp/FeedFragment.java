@@ -101,6 +101,18 @@ public class FeedFragment extends Fragment{
 			    
 	    	feedResultAdapter = new FeedResultsAdapter(this.getActivity(), R.layout.custom_listview_item_search_results, MainNavActivity.feedResults);
 		    feedResultList.setAdapter(feedResultAdapter);
+		    
+		    feedResultList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+						feedResultAdapter.setSelectedRows(position);
+						feedResultList.invalidateViews();
+						view.refreshDrawableState();
+					
+				}
+			});
 
 		    selectFeedList = (ListView) view.findViewById(R.id.selectFeedlist);
 		    selectFeedAdapter = new SelectFeedAdapter(this.getActivity(), R.layout.custom_listview_current_feeds, MainNavActivity.feedsSubscribed);
@@ -290,7 +302,7 @@ public class FeedFragment extends Fragment{
 	        
 	        
 	        addManualFeed.setOnClickListener(new OnClickListener() {
-				
+	        	
 				@Override
 				public void onClick(View v) {
 					if(originTextView.getText().toString().length() > 0 && destinationTextView.getText().toString().length() > 0 && originStopAdapter != null && destinationStopAdapter != null) {
@@ -497,7 +509,7 @@ public class FeedFragment extends Fragment{
 					}
 					else if(result.contains("planjourney")) {
 						Log.d("PLANJOURNEY", "POSTEXECUTE - planjourney");
-						final LinearLayout addFeedManuallyFrame = (LinearLayout) view.findViewById(R.id.AddFeedManuallyFrame);
+						
 				        final LinearLayout feedResultsFrame = (LinearLayout) view.findViewById(R.id.FeedResultsFrame);
 				        final LinearLayout noFeedResultsFrame = (LinearLayout) view.findViewById(R.id.noFeedResultsFrame);
 				        final LinearLayout linlaHeaderProgressFeedResults = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressFeedResults);

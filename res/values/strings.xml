@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-     <!-- <string name="urixml">http://10.13.37.86/Service.svc/</string> -->
-     <string name="urixml">http://192.168.1.67/Service.svc/</string>
+     <string name="urixml">http://10.13.37.86/Service.svc/</string>
+     <!-- <string name="urixml">http://192.168.1.67/Service.svc/</string> -->
      <string name="loadingMessage">Loading</string>
     <string name="no_internet">No internet connection!</string>
     <string name="logout_successful">Logged out!</string>
@@ -17,7 +17,7 @@
     <string name="no_search_results">There are no feeds available for those locations.</string>
     <string name="no_feed_options_selected">Please select at least one option.</string>
     <string name="feed_header">News Feed</string>
-    
+    <string name="no_checkin_options_selected">Please select an option.</string>
 
     <string name="app_name">CasApp</string>
     <string name="title_section1">Section 1</string>

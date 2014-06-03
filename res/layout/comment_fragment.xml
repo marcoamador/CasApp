@@ -42,6 +42,63 @@
             </Button>
         </LinearLayout>
     </LinearLayout>
+    
+     <LinearLayout
+        android:id="@+id/noCheckInResultsFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+       <TextView
+            android:id="@+id/search_results_header_5"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/search_results"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+       
+        <TextView
+            android:id="@+id/search_results_header_4"
+            android:layout_width="fill_parent"
+          
+            android:layout_height="150dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="@string/no_search_results"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+        
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            
+            android:gravity="center|bottom"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/goBackButtonCheckIn"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/button_selected"
+                android:drawableLeft="@drawable/back"
+                android:drawablePadding="-35dp"
+                android:paddingLeft="60dip"
+                android:text="@string/goBack"
+                android:textSize="16sp"
+                android:textStyle="bold" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
 
     
     <!-- Not Checked In -->
@@ -49,7 +106,7 @@
         android:id="@+id/notCheckedInComment"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical" >
 
         <TextView
@@ -147,6 +204,27 @@
         android:orientation="vertical"
         android:visibility="gone"
         >
+        
+         <LinearLayout
+        android:id="@+id/linlaHeaderProgressCheckIn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        
+         <ProgressBar
+            android:id="@+id/pbHeaderProgressFeed"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            
+             >
+        </ProgressBar>
+        
+    	</LinearLayout>
 
         <TextView
             android:id="@+id/checkin_results_header"
