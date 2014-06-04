@@ -49,7 +49,7 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
         R.drawable.perm_group_profile,
 	};
 	
-	private static final String[] FEED_CONTENT = new String[] {"News Feed", "Selected Feeds", "Receive New Feed"};
+	//private static final String[] FEED_CONTENT = new String[] {"News Feed", "Selected Feeds", "Receive New Feed"};
 	FragmentPagerAdapter adapterViewPager;
 	
 	
@@ -386,13 +386,6 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			return true;
 		}	
 	
-	
-	
-	
-	
-	
-	
-	
 	class UploadData extends AsyncTask<String, String, String> {
 
 	    @Override
@@ -424,31 +417,6 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 							handler.sendEmptyMessage(3);
 							ret = "ok logout";
 							break;
-						case 2://FEED
-							String uriUpdateNewsFeed= params[1];
-							ArrayList<NewsFeed> t = CasApp.doGet(getApplicationContext(), uriUpdateNewsFeed, headers, new TypeToken<ArrayList<NewsFeed>>() {}.getType());
-							/*if(TabMain.getlastWriteFeedId() != 0 || TabMain.getlastCategorisedFeedId() != 0)
-								TabMain.addNewsFeeds(t);
-							else 
-								TabMain.setNewsFeeds(t);*/
-							ret = "ok updatenewsfeed";
-							handler.sendEmptyMessage(4);
-							break;
-						case 3://RATE
-							/*String uriUpdateRate= params[1];
-							ArrayList<CommentCategorised> r = AndroidApp.doGet(getApplicationContext(), uriUpdateRate, headers, new TypeToken<ArrayList<CommentCategorised>>() {}.getType());
-							if(TabMain.getLastRateId() != 0)
-								TabMain.addRate(r);
-							else 
-								TabMain.setRate(r);
-							ret = "ok updaterate";*/
-							handler.sendEmptyMessage(4);
-							break;
-						case 4://JOURNEY
-							/*String uriGetJourneys = params[1];
-							journeysPlanned = AndroidApp.doGet(getApplicationContext(), uriGetJourneys, headers, new TypeToken<ArrayList<JourneyPath>>() {}.getType());
-							ret = "ok getjourneys";*/
-							break;    						
 						default:
 							if(type == 1)
 								return "logout - Default";

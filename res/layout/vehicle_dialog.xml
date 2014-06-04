@@ -5,25 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/vehicleTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="5dp"
-        android:gravity="center_vertical"
-        android:text="@string/vehicleTitle"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#33B5E5" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:fillViewport="false" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -107,7 +93,7 @@
             <!-- Vehicle Delay Frame -->
 
             <LinearLayout
-                android:id="@+id/delay_frame"
+                android:id="@+id/progress_frame"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
@@ -118,12 +104,12 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/delayTitle"
+                        android:id="@+id/progressTitle"
                         android:layout_width="fill_parent"
                         android:layout_height="20dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/delayTitle"
+                        android:text="@string/progressTitle"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -136,7 +122,7 @@
                     android:orientation="horizontal" >
 
                     <SeekBar
-                        android:id="@+id/delaySlider"
+                        android:id="@+id/progressSlider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -150,18 +136,18 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/delayValue"
+                        android:id="@+id/progressValue"
                         android:layout_width="0dip"
                         android:layout_height="20dp"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="40"
-                        android:text="@string/delayValue"
+                        android:text="@string/progressValue"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/delaySubmitButton"
+                        android:id="@+id/progressSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
                         android:layout_marginRight="15dp"
@@ -258,9 +244,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/CommentDismissButton"
+        android:id="@+id/VehicleCommentDismissButton"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="60dp"
         android:background="@drawable/button_selected"
         android:text="@string/dismiss" />
 

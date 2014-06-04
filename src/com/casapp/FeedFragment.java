@@ -10,7 +10,6 @@ import com.casapp.RefreshableListView.onListRefreshListener;
 import com.google.gson.reflect.TypeToken;
 
 import data.objects.JourneyPath;
-import data.objects.Network;
 import data.objects.NewsFeed;
 import data.objects.Stop;
 import android.content.Context;
@@ -33,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class FeedFragment extends Fragment{

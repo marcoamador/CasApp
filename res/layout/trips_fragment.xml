@@ -96,6 +96,18 @@
         android:visibility="gone"
          >
         
+        <TextView android:id="@+id/favouritesNotFound"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:text="@string/favouriteNotFound"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@android:color/white"
+            android:layout_height="250dp"
+            android:textSize="16sp"
+            />
+        
   
         <ListView android:id="@+id/favouriteslist"
         android:layout_width="fill_parent"
@@ -267,8 +279,20 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        
+        android:visibility="gone"
          >
+        
+         <TextView android:id="@+id/scheduleNotFound"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:text="@string/scheduleNotFound"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@android:color/white"
+            android:layout_height="250dp"
+            android:textSize="16sp"
+            />
   
         <ListView android:id="@+id/schedulelist"
         android:layout_width="fill_parent"

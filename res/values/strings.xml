@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-     <string name="urixml">http://10.13.37.86/Service.svc/</string>
-     <!-- <string name="urixml">http://192.168.1.67/Service.svc/</string> -->
+     <!-- <string name="urixml">http://10.13.37.86/Service.svc/</string> -->
+     <string name="urixml">http://192.168.1.67/Service.svc/</string>
      <string name="loadingMessage">Loading</string>
     <string name="no_internet">No internet connection!</string>
     <string name="logout_successful">Logged out!</string>
@@ -18,6 +18,7 @@
     <string name="no_feed_options_selected">Please select at least one option.</string>
     <string name="feed_header">News Feed</string>
     <string name="no_checkin_options_selected">Please select an option.</string>
+    <string name="successful_written_comment">Comment submitted! Thanks for your feedback!</string>
 
     <string name="app_name">CasApp</string>
     <string name="title_section1">Section 1</string>
@@ -100,8 +101,8 @@
     <string name="vehicleTitle">Vehicle Progress</string>
     <string name="speedTitle">Travel Speed</string>
     <string name="speedValue">Normal</string>
-    <string name="delayTitle">Vehicle Delay</string>
-    <string name="delayValue">On Schedule</string>
+    <string name="progressTitle">Vehicle Delay</string>
+    <string name="progressValue">On Schedule</string>
     <string name="courtesyTitle">Courtesy</string>
     <string name="courtesyValue">Normal</string>
     <string name="similarTitle">Similar Vehicle</string>
@@ -129,7 +130,8 @@
     <string name="hour">18:00</string>
     <string name="schedule_results_header">Trip Options</string>
     <string name="scheduleButton">Add Trip to Schedule</string>
-    
+    <string name="favouriteNotFound">Add a Favourite course and activate it to easily add them to your feeds.</string>
+     <string name="scheduleNotFound">Schedule a trip and receive notifications to subscribe related feeds when it\'s time to go.</string>
     <!-- PROFILE FRAGMENT -->
     <string name="profile_points">Points:</string>
     <string name="profile_privacy">Privacy Settings</string>
@@ -338,29 +340,7 @@
         <item>This vehicle\'s is reasonable quick.</item>
         <item>This vehicle\'s is quick.</item>
         <item>This vehicle\'s is fast.</item>
-    </string-array>      
-    
-    <string-array name="arrived_array">
-        <item>Severely delayed</item>
-        <item>Delayed</item>
-        <item>On-time</item>
-        <item>Early</item>
-        <item>Very early</item>
-    </string-array>
-    <string-array name="arrived_rated_array">
-        <item>This vehicle\'s arrive at stop is severely delayed.</item>
-        <item>This vehicle\'s arrive at stop is delayed.</item>
-        <item>This vehicle\'s arrive at stop is on-time.</item>
-        <item>This vehicle\'s arrive at stop is early.</item>
-        <item>This vehicle\'s arrive at stop is very early.</item>
-    </string-array>
-    <string-array name="arrived_feed_array">
-        <item>This vehicle\'s arrive at stop is severely delayed.</item>
-        <item>This vehicle\'s arrive at stop is delayed.</item>
-        <item>This vehicle\'s arrive at stop is on-time.</item>
-        <item>This vehicle\'s arrive at stop is early.</item>
-        <item>This vehicle\'s arrive at stop is very early.</item>
-    </string-array>      
+    </string-array>         
     
     <string-array name="progress_array">
         <item>Severely delayed</item>

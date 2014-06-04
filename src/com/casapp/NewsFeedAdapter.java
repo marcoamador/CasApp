@@ -3,9 +3,9 @@ package com.casapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,7 @@ import data.objects.NewsFeed;
 
 public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 	private List<NewsFeed> newsFeedsObjects = new ArrayList<NewsFeed>();
-	private SimpleDateFormat hourMinutesFormat = new SimpleDateFormat("HH:mm");
+	private SimpleDateFormat hourMinutesFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	
 	public NewsFeedAdapter(Context context, int textViewResourceId, List<NewsFeed> objects) {
 		super(context, textViewResourceId, objects);
@@ -91,18 +91,15 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 				typeComment = R.array.speed_feed_array;
 				break;
 			case 9:
-				typeComment = R.array.arrived_feed_array;
-				break;
-			case 10:
 				typeComment = R.array.progress_feed_array;
 				break;
-			case 11:
+			case 19:
 				typeComment = R.array.similar_feed_array;
 				break;					
-			case 12:
+			case 11:
 				typeComment = R.array.courtesy_feed_array;
 				break;
-			case 13:
+			case 12:
 				typeComment = R.array.smoothness_feed_array;
 				break;							
 			default:

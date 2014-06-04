@@ -5,28 +5,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/atmosphereTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="5dp"
-        android:gravity="center_vertical"
-        android:text="@string/atmosphereTitle"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#33B5E5" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:fillViewport="false" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
@@ -90,7 +76,7 @@
                         android:id="@+id/temperatureSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -164,7 +150,7 @@
                         android:id="@+id/noiseSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -239,7 +225,7 @@
                         android:id="@+id/crowdingSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -313,7 +299,7 @@
                         android:id="@+id/seatingSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -388,7 +374,7 @@
                         android:id="@+id/cleanSubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -462,7 +448,7 @@
                         android:id="@+id/scenerySubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -536,7 +522,7 @@
                         android:id="@+id/securitySubmitButton"
                         android:layout_width="0dip"
                         android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="20"
                         android:background="@drawable/button_selected"
                         android:text="@string/commentSendButton"
@@ -554,9 +540,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/CommentDismissButton"
+        android:layout_marginTop="5dp"
+        android:id="@+id/AtmosphereCommentDismissButton"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:background="@drawable/button_selected"
         android:text="@string/dismiss" />
 

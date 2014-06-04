@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.casapp.FeedFragment.SearchFeedTask;
 import com.google.gson.reflect.TypeToken;
 
+import android.app.Dialog;
 import android.content.Context;
+import data.objects.CommentCategorised;
+import data.objects.CommentWritten;
 import data.objects.JourneyPath;
 import data.objects.Stop;
-import android.content.Context;
+import data.objects.TemplateComment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -28,9 +30,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,11 @@ public class CommentFragment extends Fragment{
 		String checkInDestination = "";
 		public static int selectedRow = -1;
 		String written = "";
-
+		private String latitude = "";
+		private String longitude = "";	
+		private CommentWritten comment;
+		private CommentCategorised commentCat;
+		Dialog dialog;
 	    // newInstance constructor for creating fragment with arguments
 	    public static CommentFragment newInstance() {
 	    	CommentFragment commentFragment = new CommentFragment();
@@ -63,6 +69,11 @@ public class CommentFragment extends Fragment{
 	    // Inflate the view for the fragment based on layout XML
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	    	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+	        latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+	        longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+	        
+	        
 	        view = inflater.inflate(R.layout.comment_fragment, container, false);
 	        
 	        LinearLayout notLoggedInFrame = (LinearLayout) view.findViewById(R.id.notLoggedInComment);
@@ -77,6 +88,566 @@ public class CommentFragment extends Fragment{
 	        final Button checkInButton = (Button) view.findViewById(R.id.checkInButton);
 	        
 	        Button atmosphere = (Button) view.findViewById(R.id.atmosphereCommentButton);
+	        Button vehicle = (Button) view.findViewById(R.id.vehicleCommentButton);
+	        Button driver = (Button) view.findViewById(R.id.driverCommentButton);
+	        Button writtenCommentSubmit = (Button) view.findViewById(R.id.writtenCommentSubmit);
+	        final TextView writtenCommentField = (TextView) view.findViewById(R.id.writtenCommentField);
+	        TextView commentOrigin = (TextView) view.findViewById(R.id.commentMenuOrigin);
+			TextView commentDestination = (TextView) view.findViewById(R.id.commentMenuDestination);
+	        
+			///////////////////////////////////////////
+			//
+	        //ATMOSPHERE
+	        atmosphere.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog = new Dialog(getActivity());
+					dialog.setContentView(R.layout.atmosphere_dialog);
+					dialog.setTitle("Atmosphere");
+					dialog.getWindow().setLayout(700, 800);
+					
+					Button atmosphereDismiss = (Button) dialog.getWindow().getDecorView().findViewById(R.id.AtmosphereCommentDismissButton);
+					atmosphereDismiss.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+							
+						}
+					});
+					
+					//temperature
+					final SeekBar temperatureSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.temperatureSlider);
+					TextView temperatureValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.temperatureValue);
+					Button temperatureSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.temperatureSubmitButton);
+					temperatureSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int temperatureProgress = temperatureSlider.getProgress();
+					String[] temperature_array = getResources().getStringArray(R.array.temperature_array);
+			    	int arrayTemperaturePos = (temperatureProgress * temperature_array.length) / temperatureSlider.getMax();
+			    	temperatureValue.setText(temperature_array[arrayTemperaturePos]);
+					
+			    	temperatureSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (temperatureSlider.getProgress() == 0 ? 1 : temperatureSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] temperature_array = getResources().getStringArray(R.array.temperature_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, temperature_array.length, temperatureSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	
+					
+					//noise
+					final SeekBar noiseSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.noiseSlider);
+					TextView noiseValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.noiseValue);
+					
+					Button noiseSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.noiseSubmitButton);
+					noiseSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int noiseProgress = noiseSlider.getProgress();
+					String[] noise_array = getResources().getStringArray(R.array.noise_array);
+			    	int arrayNoisePos = (noiseProgress * noise_array.length) / noiseSlider.getMax();
+			    	noiseValue.setText(noise_array[arrayNoisePos]);
+					
+			    	noiseSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (noiseSlider.getProgress() == 0 ? 1 : noiseSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] noise_array = getResources().getStringArray(R.array.noise_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, noise_array.length, noiseSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	
+			    	//Crowding
+			    	
+			    	final SeekBar crowdingSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.crowdingSlider);
+					TextView crowdingValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.crowdingValue);
+					
+					Button crowdingSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.crowdingSubmitButton);
+					crowdingSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int crowdingProgress = crowdingSlider.getProgress();
+					String[] crowding_array = getResources().getStringArray(R.array.crowding_array);
+			    	int arrayCrowdingPos = (crowdingProgress * crowding_array.length) / crowdingSlider.getMax();
+			    	crowdingValue.setText(crowding_array[arrayCrowdingPos]);
+					
+			    	crowdingSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (crowdingSlider.getProgress() == 0 ? 1 : crowdingSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] crowding_array = getResources().getStringArray(R.array.crowding_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, crowding_array.length, crowdingSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	//Seating
+			    	
+			    	final SeekBar seatingSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.seatingSlider);
+					TextView seatingValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.seatingValue);
+					
+					Button seatingSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.seatingSubmitButton);
+					seatingSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int seatingProgress = seatingSlider.getProgress();
+					String[] seating_array = getResources().getStringArray(R.array.seating_array);
+			    	int arraySeatingPos = (seatingProgress * seating_array.length) / seatingSlider.getMax();
+			    	seatingValue.setText(seating_array[arraySeatingPos]);
+					
+			    	seatingSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (seatingSlider.getProgress() == 0 ? 1 : seatingSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] seating_array = getResources().getStringArray(R.array.seating_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, seating_array.length, seatingSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	//Clean
+			    	
+
+			    	final SeekBar cleanSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.cleanSlider);
+					TextView cleanValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.cleanValue);
+					
+					Button cleanSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.cleanSubmitButton);
+					cleanSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int cleanProgress = cleanSlider.getProgress();
+					String[] clean_array = getResources().getStringArray(R.array.cleanliness_array);
+			    	int arrayCleanPos = (cleanProgress * clean_array.length) / cleanSlider.getMax();
+			    	cleanValue.setText(clean_array[arrayCleanPos]);
+					
+			    	cleanSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (cleanSlider.getProgress() == 0 ? 1 : cleanSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] clean_array = getResources().getStringArray(R.array.cleanliness_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, clean_array.length, cleanSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	//Scenery
+
+			    	final SeekBar scenerySlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.scenerySlider);
+					TextView sceneryValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.sceneryValue);
+					
+					Button scenerySubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.scenerySubmitButton);
+					scenerySlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int sceneryProgress = scenerySlider.getProgress();
+					String[] scenery_array = getResources().getStringArray(R.array.scenery_array);
+			    	int arraySceneryPos = (sceneryProgress * scenery_array.length) / scenerySlider.getMax();
+			    	sceneryValue.setText(scenery_array[arraySceneryPos]);
+					
+			    	scenerySubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (scenerySlider.getProgress() == 0 ? 1 : scenerySlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] scenery_array = getResources().getStringArray(R.array.scenery_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, scenery_array.length, scenerySlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+			    	
+			    	//Security
+
+			    	final SeekBar securitySlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.securitySlider);
+					TextView securityValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.securityValue);
+					
+					Button securitySubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.securitySubmitButton);
+					securitySlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int securityProgress = securitySlider.getProgress();
+					String[] security_array = getResources().getStringArray(R.array.perceived_security_array);
+			    	int arraySecurityPos = (securityProgress * security_array.length) / securitySlider.getMax();
+			    	securityValue.setText(security_array[arraySecurityPos]);
+					
+			    	securitySubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (securitySlider.getProgress() == 0 ? 1 : securitySlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] security_array = getResources().getStringArray(R.array.perceived_security_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, security_array.length, securitySlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					dialog.show();
+					
+				}
+			});
+			///////////////////////////////////////////7
+			//
+	        //VEHICLE
+	        vehicle.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog = new Dialog(getActivity());
+					dialog.setContentView(R.layout.vehicle_dialog);
+					dialog.setTitle("Vehicle");
+					dialog.getWindow().setLayout(700, 800);
+					
+					Button vehicleDismiss = (Button) dialog.getWindow().getDecorView().findViewById(R.id.VehicleCommentDismissButton);
+					vehicleDismiss.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+							
+						}
+					});
+					dialog.show();
+					
+					//Speed
+					final SeekBar speedSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.speedSlider);
+					TextView speedValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.speedValue);
+					Button speedSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.speedSubmitButton);
+					speedSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int speedProgress = speedSlider.getProgress();
+					String[] speed_array = getResources().getStringArray(R.array.speed_array);
+			    	int arraySpeedPos = (speedProgress * speed_array.length) / speedSlider.getMax();
+			    	speedValue.setText(speed_array[arraySpeedPos]);
+					
+			    	speedSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (speedSlider.getProgress() == 0 ? 1 : speedSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] speed_array = getResources().getStringArray(R.array.speed_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, speed_array.length, speedSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					
+					
+					//Delay
+			    	
+			    	final SeekBar progressSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.progressSlider);
+					TextView progressValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.progressValue);
+					Button progressSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.progressSubmitButton);
+					progressSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int progressProgress = progressSlider.getProgress();
+					String[] progress_array = getResources().getStringArray(R.array.progress_array);
+			    	int arrayProgressPos = (progressProgress * progress_array.length) / progressSlider.getMax();
+			    	progressValue.setText(progress_array[arrayProgressPos]);
+					
+			    	progressSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (progressSlider.getProgress() == 0 ? 1 : progressSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] progress_array = getResources().getStringArray(R.array.progress_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, progress_array.length, progressSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					
+					//Similar
+			    	final SeekBar similarSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.similarSlider);
+					TextView similarValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.similarValue);
+					Button similarSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.similarSubmitButton);
+					similarSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int similarProgress = similarSlider.getProgress();
+					String[] similar_array = getResources().getStringArray(R.array.similar_array);
+			    	int arraySimilarPos = (similarProgress * similar_array.length) / similarSlider.getMax();
+			    	similarValue.setText(similar_array[arraySimilarPos]);
+					
+			    	similarSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (similarSlider.getProgress() == 0 ? 1 : similarSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] similar_array = getResources().getStringArray(R.array.similar_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, similar_array.length, similarSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					
+					
+					
+					
+					
+				}
+			});
+	        ///////////////////////////////////////////7
+	        //
+	        //DRIVER
+	        driver.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog = new Dialog(getActivity());
+					dialog.setContentView(R.layout.driver_dialog);
+					dialog.setTitle("Driver");
+					dialog.getWindow().setLayout(700, 800);
+					
+					Button driverDismiss = (Button) dialog.getWindow().getDecorView().findViewById(R.id.DriverCommentDismissButton);
+					driverDismiss.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+							
+						}
+					});
+					
+					dialog.show();
+					
+					//Courtesy
+					final SeekBar courtesySlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.courtesySlider);
+					TextView courtesyValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.courtesyValue);
+					Button courtesySubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.courtesySubmitButton);
+					courtesySlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int courtesyProgress = courtesySlider.getProgress();
+					String[] courtesy_array = getResources().getStringArray(R.array.courtesy_array);
+			    	int arrayCourtesyPos = (courtesyProgress * courtesy_array.length) / courtesySlider.getMax();
+			    	courtesyValue.setText(courtesy_array[arrayCourtesyPos]);
+					
+			    	courtesySubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (courtesySlider.getProgress() == 0 ? 1 : courtesySlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] courtesy_array = getResources().getStringArray(R.array.courtesy_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, courtesy_array.length, courtesySlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					
+					//Smoothness
+					final SeekBar smoothnessSlider = (SeekBar) dialog.getWindow().getDecorView().findViewById(R.id.smoothnessSlider);
+					TextView smoothnessValue = (TextView) dialog.getWindow().getDecorView().findViewById(R.id.smoothnessValue);
+					Button smoothnessSubmit = (Button) dialog.getWindow().getDecorView().findViewById(R.id.smoothnessSubmitButton);
+					smoothnessSlider.setOnSeekBarChangeListener(new SeekBarListener(getActivity(), dialog.getWindow().getDecorView()));
+					int smoothnessProgress = smoothnessSlider.getProgress();
+					String[] smoothness_array = getResources().getStringArray(R.array.smoothness_array);
+			    	int arraySmoothnessPos = (smoothnessProgress * smoothness_array.length) / smoothnessSlider.getMax();
+			    	smoothnessValue.setText(smoothness_array[arraySmoothnessPos]);
+					
+			    	smoothnessSubmit.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							int commentProgress = (smoothnessSlider.getProgress() == 0 ? 1 : smoothnessSlider.getProgress());
+			            	commentCat = new CommentCategorised();
+			            	commentCat.setClassification(commentProgress);
+			            	commentCat.setDate();
+			            	String[] smoothness_array = getResources().getStringArray(R.array.smoothness_array);
+			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, smoothness_array.length, smoothnessSlider.getMax()));
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	
+			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
+			                longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+			            	commentCat.setLatitude(latitude);
+			            	commentCat.setLongitude(longitude);
+			            	
+			            	
+			       			//Upload Data
+			    			CategoryCommentTask commentTask = new CategoryCommentTask();
+			    			commentTask.execute(commentCat);
+							
+						}
+					});
+					
+				}
+			});
+	        
+	        
+	        writtenCommentSubmit.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {	        		
+	            	String comment_string = writtenCommentField.getText().toString();
+	            	comment = new CommentWritten();
+	            	comment.setType(0);
+	            	comment.setComment(comment_string);
+	            	comment.setDate();
+	            	
+	            	comment.setLatitude(latitude);
+	            	comment.setLongitude(longitude);
+	            	
+	            	if(comment_string.length() >= 3 && comment_string.length() <= 140) {
+	           			//Upload Data
+	        			CommentTask commentTask = new CommentTask();
+	        			commentTask.execute(comment);
+	            	}else if(comment_string.length() < 3){
+	            		Toast.makeText(getActivity(), "The comment is too short. Please enter between 2-140 characters.", Toast.LENGTH_SHORT).show();
+	            	}else if(comment_string.length() > 140){
+	            		Toast.makeText(getActivity(), "The comment is too long. Please enter between 2-140 characters.", Toast.LENGTH_SHORT).show();
+	            	}
+					
+				}
+			});
 	        
 	        
 	        final AutoCompleteTextView originCheckIn = (AutoCompleteTextView) view.findViewById(R.id.addCheckinManualOrigin);
@@ -118,6 +689,10 @@ public class CommentFragment extends Fragment{
 	        	notCheckedInFrame.setVisibility(View.VISIBLE);
 	        	commentFrame.setVisibility(View.GONE);
 	        }else if(MainNavActivity.isCheckedIn()){
+	        	if(!checkInOrigin.equals(""))
+	        		commentOrigin.setText(checkInOrigin);
+	        	if(!checkInDestination.equals(""))
+	        		commentDestination.setText(checkInDestination);
 	        	commentFrame.setVisibility(View.VISIBLE);
 	        	notLoggedInFrame.setVisibility(View.GONE);
 	        	notCheckedInFrame.setVisibility(View.GONE);
@@ -286,14 +861,18 @@ public class CommentFragment extends Fragment{
 	    		case 1:
 	    			Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
 	    			break;
+	    		case 2:
+					Toast.makeText(getActivity(), getString(R.string.successful_written_comment), Toast.LENGTH_SHORT).show();
+					break;
 	    		default:
 	    			break;
 	    		}
 	    	}
 	    };	
+	    
+	     
 	  		
 	    //---------- UPLOAD DATA -------------
-	    //Check Out
 	    class SearchCheckInTask extends AsyncTask<String, String, String> {
 
 	    	@Override
@@ -403,6 +982,117 @@ public class CommentFragment extends Fragment{
 				}
 	    	}
 	    }	
+	    
+	    class CommentTask extends AsyncTask<CommentWritten, String, String> {
+
+		    @Override
+		    protected void onPreExecute() {
+		        super.onPreExecute();
+		        Toast.makeText(getActivity(), "Sending your comment...", Toast.LENGTH_SHORT).show();
+		    }
+
+		    
+		    @Override
+		    protected String doInBackground(CommentWritten... params) {
+		    	CommentWritten comment = params[0];
+		    	String uri = "comment/writtencomment";
+		    	
+				if (isOnline()) {
+					try {            	
+						CasApp.doPut(getActivity(), uri, MainNavActivity.headers, new TypeToken<CommentWritten>() {}.getType(), comment);
+					}
+	    			catch(Exception e) {
+						handler.sendEmptyMessage(0);
+						return e.getMessage();
+	    			}
+	    			handler.sendEmptyMessage(2);
+	    			
+				}
+				else {
+		    		handler.sendEmptyMessage(1);
+		    		return "ok";					
+				}
+				return "ok";
+		    }
+		    
+			   @Override
+		      protected void onPostExecute(String result) {
+				   super.onPostExecute(result);
+				   //Checks if there was an exception
+				   if(!result.equals("ok")) {
+					   Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+				   }
+		      }
+		}	
+	    
+	    
+	    
+	  //---------- UPLOAD DATA -------------
+		class CategoryCommentTask extends AsyncTask<CommentCategorised, String, String> {
+
+		    @Override
+		    protected void onPreExecute() {
+		        super.onPreExecute();
+		        Toast.makeText(getActivity(), "Sending your comment...", Toast.LENGTH_SHORT).show();
+		    }
+
+		    
+		    @Override
+		    protected String doInBackground(CommentCategorised... params) {
+		    	CommentCategorised comment = params[0];
+		    	String uri = "comment/categorisedcomment";
+		    	
+				if (isOnline()) {
+					try {            	
+						CasApp.doPut(getActivity(), uri, MainNavActivity.headers, new TypeToken<CommentCategorised>() {}.getType(), comment);
+					}
+	    			catch(Exception e) {
+						handler.sendEmptyMessage(0);
+						return e.getMessage();
+	    			}
+	    			handler.sendEmptyMessage(2);
+	    			
+				}
+				else {
+		    		handler.sendEmptyMessage(1);
+		    		return "ok";					
+				}
+				return "ok";
+		    }
+		    
+			   @Override
+		      protected void onPostExecute(String result) {
+				   super.onPostExecute(result);
+				   //Checks if there was an exception
+				   if(!result.equals("ok")) {
+					   Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+				   }
+		      }
+		}	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	  		
 	  	//---------- IS ONLINE -------------
 		//Checks if there is internet connection

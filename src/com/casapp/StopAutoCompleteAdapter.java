@@ -3,11 +3,9 @@ package com.casapp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import com.google.gson.reflect.TypeToken;
-
 import data.objects.Stop;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Handler;
@@ -18,6 +16,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
+@SuppressLint("DefaultLocale")
 public class StopAutoCompleteAdapter extends ArrayAdapter<Stop> implements Filterable {
 	private ArrayList<Stop> stops;
 	private ArrayList<Stop> filteredStops;
