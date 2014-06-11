@@ -3,6 +3,7 @@ package com.casapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +45,9 @@ public class TripsFragment extends Fragment{
 	        Button tripsAddFavouriteButton = (Button) view.findViewById(R.id.addFavouriteButton);
 	        Button tripsSearchFavouriteButton = (Button) view.findViewById(R.id.searchFavouriteButton);
 	        
+	        Log.d("TRIPS", Boolean.toString(MainNavActivity.isLoggedin()));
 	        
 	        
-	        favourites.setChecked(true);
-	        schedule.setChecked(false);
 	        
 	        if(MainNavActivity.isLoggedin()) {
 	        	favouritesFrame.setVisibility(View.VISIBLE);

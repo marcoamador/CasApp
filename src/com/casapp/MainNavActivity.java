@@ -1,10 +1,14 @@
 package com.casapp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -64,9 +68,9 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 
 	//
 	
-	protected LocationManager locationManager = null;
-	protected Location lastLocation = null;
-	private static final int TWO_MINUTES = 1000 * 60 * 2;
+	public static LocationManager locationManager = null;
+	public static Location lastLocation = null;
+	public static final int TWO_MINUTES = 1000 * 60 * 2;
 	public static Bundle bundleToSend = new Bundle();
 	public static long GPS_MIN_TIME = 0;//miliseconds
 	public static float GPS_MIN_DISTANCE = 0;//meters
@@ -160,6 +164,18 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_nav);
 		
+		
+		if(savedInstanceState != null && savedInstanceState.getSerializable("feedsSubscribed") != null &&
+				savedInstanceState.getIntegerArrayList("networksList") != null && savedInstanceState.getSerializable("feed") != null){
+			numFeeds = savedInstanceState.getInt("numFeeds");
+			feedsSubscribed = (ArrayList<JourneyPath>) savedInstanceState.getSerializable("feedsSubscribed");
+			networksList = (ArrayList<Integer>) savedInstanceState.getIntegerArrayList("networksList");
+			//feed = (ArrayList<NewsFeed>) savedInstanceState.getSerializable("feed");
+			lastCategorisedFeedId = savedInstanceState.getInt("lastCategorisedFeedId");
+			lastWriteFeedId = savedInstanceState.getInt("lastWriteFeedId");
+		}
+		
+		
 		//GPS START
 	    this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, GPS_MIN_TIME, GPS_MIN_DISTANCE, this);
@@ -171,14 +187,17 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		headers.put("dateLogin", pref.getString(CasApp.PREF_DATELOGIN, ""));
 		headers.put("authToken", pref.getString(CasApp.PREF_AUTHTOKEN, ""));
 		loggedIn = pref.getBoolean(CasApp.PREF_LOGGEDIN, false);
+		checkedIn = pref.getBoolean(CasApp.PREF_CHECKIN, false);
+		
 		
 		final ActionBar actionBar = getActionBar();
-		actionBar.setTitle("CasApp");
+		actionBar.setTitle("Journata");
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
 		FragmentPagerAdapter adapter = new GoogleMusicAdapter(getSupportFragmentManager());
 
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3);
         pager.setAdapter(adapter);
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.indicator);
@@ -205,6 +224,18 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
     	Log.d("TABMAIN", "TABMAIN: onPause");
     	locationManager.removeUpdates(this);
     }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle state){
+    	
+    	super.onSaveInstanceState(state);
+    	state.putInt("numFeeds", numFeeds);
+    	//state.putSerializable("feedsSubscribed", feedsSubscribed);
+    	state.putIntegerArrayList("networksList", networksList);
+    	//state.putSerializable("feed", feed);
+    	state.putInt("lastCategorisedFeedId", lastCategorisedFeedId);
+    	state.putInt("lastWriteFeedId", lastWriteFeedId);
+    }
 
     protected void onStop() {
     	super.onStop();
@@ -223,10 +254,13 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
         	case 0:
         		return FeedFragment.newInstance();
         	case 1:
+        		
         		return CommentFragment.newInstance();
         	case 2:
+        		
         		return TripsFragment.newInstance();
         	case 3:
+        		
         		return ProfileFragment.newInstance();
         	default:
         		return null;
@@ -300,14 +334,30 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Log.d("MENU", "Menu onOptionsItemSelected: LOGOUT");
+				if(checkedIn)
+					doCheckout();
 	        	doLogout();
-	        	Intent navIntent = new Intent(getApplicationContext(), MainNavActivity.class);
-	        	startActivity(navIntent);
+	        	invalidateOptionsMenu();
+	        	//Intent navIntent = new Intent(getApplicationContext(), MainNavActivity.class);
+	        	//startActivity(navIntent);
+				return true;
+			}
+		});
+	    
+	    checkout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				doCheckout();
+				invalidateOptionsMenu();
+				//Intent navIntent = new Intent(getApplicationContext(), MainNavActivity.class);
+	        	//startActivity(navIntent);
 				return true;
 			}
 		});
 	    return super.onCreateOptionsMenu(menu);
 	}
+
 
 	public static boolean isLoggedin() {
 		return loggedIn;
@@ -365,10 +415,32 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		};
 	
 		
+		public void doCheckout() {
+			Calendar c = Calendar.getInstance();
+			Date dateCheckOut = c.getTime();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+			String dateCheckOutStr = dateFormat.format(dateCheckOut);
+			dateCheckOutStr = dateCheckOutStr.replace(" ", "_");
+			SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
+			String usernameStr = pref.getString(CasApp.PREF_USERNAME, "");
+			String uriCheckOut = "journey/checkout?idUser=" + usernameStr + "&endtime=" + dateCheckOutStr;
+			String typeStr = "0";
+			
+			if(!usernameStr.equals("")) {
+				Toast.makeText(getApplicationContext(), "Checking out", Toast.LENGTH_SHORT).show();
+				UploadData uploadDataCheckOut = new UploadData();
+				uploadDataCheckOut.execute(typeStr, uriCheckOut);
+			}
+			
+			Log.d("LOGOUT", "username " + usernameStr);
+			
+		}
+		
 		//--------- LOGOUT -----------
 		
 		//Do logout
-		public boolean doLogout() {
+		public void doLogout() {
 			
 			Log.d("LOGOUT", "Enters function");
 
@@ -378,12 +450,8 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 			Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
 			UploadData uploadDataCheckOut = new UploadData();
 			uploadDataCheckOut.execute(typeStr, uriLogout);
-			setLoggedin(false);
-			SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME, MODE_PRIVATE);
-			pref.edit().putBoolean(CasApp.PREF_LOGGEDIN, false).putString(CasApp.PREF_AUTHTOKEN, "").putString(CasApp.PREF_DATELOGIN, "").putString(CasApp.PREF_USERNAME, "")
-			.putBoolean(CasApp.PREF_CHECKIN, false).putBoolean(CasApp.PREF_ANON, false).putString(CasApp.PREF_POINTS, "").putString(CasApp.PREF_PASSWORD, "").putString(CasApp.PREF_FEEDBACK_POINTS, "").commit();
 			Log.d("LOGOUT", "Calls upload data");
-			return true;
+			return;
 		}	
 	
 	class UploadData extends AsyncTask<String, String, String> {
@@ -455,13 +523,14 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 				//Checks if there was an exception
 				if(result.contains("logout")) {
 					SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
-					pref.edit().remove(CasApp.PREF_CHECKIN).remove(CasApp.PREF_AUTHTOKEN).remove(CasApp.PREF_DATELOGIN)
+					pref.edit().remove(CasApp.PREF_CHECKIN).remove(CasApp.PREF_AUTHTOKEN).remove(CasApp.PREF_DATELOGIN).putBoolean(CasApp.PREF_LOGGEDIN, false)
 						.remove(CasApp.PREF_LATITUDE).remove(CasApp.PREF_LONGITUDE).remove(CasApp.PREF_USERNAME).remove(CasApp.PREF_POINTS)
-						.remove(CasApp.PREF_FEEDBACK_POINTS).remove(CasApp.PREF_PASSWORD).commit();
+						.remove(CasApp.PREF_FEEDBACK_POINTS).remove(CasApp.PREFS_NAME).remove(CasApp.PREF_CHECKIN_ORIGIN).remove(CasApp.PREF_CHECKIN_DESTINATION).putBoolean(CasApp.PREF_ANON, false).remove(CasApp.PREF_PASSWORD).commit();
 					setLoggedin(false);
 					
 					
-					//Goes back to the login activity
+					
+					
 					Intent mainIntent = new Intent(getApplicationContext(), MainNavActivity.class);
 					mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );  
 					startActivity(mainIntent);  
@@ -473,32 +542,14 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 				}
 				else if(result.contains("checkout")) {
 					SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
-					pref.edit().putBoolean(CasApp.PREF_CHECKIN, false).commit();
+					pref.edit().putBoolean(CasApp.PREF_CHECKIN, false).putString(CasApp.PREF_CHECKIN_ORIGIN, "").putString(CasApp.PREF_CHECKIN_DESTINATION, "").commit();
+					setCheckedIn(false);
+					Intent mainIntent = new Intent(getApplicationContext(), MainNavActivity.class);
+					mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );  
+					startActivity(mainIntent);  
+					finish();  
 				}
-				else if(result.contains("updatenewsfeed")) {					
-					/*if(getTabHost().getCurrentTabTag().equals(TAB_FEED_TAG)) {
-						TabNewsFeed tabAct = (TabNewsFeed)getLocalActivityManager().getCurrentActivity();
-						NewsFeedAct act = (NewsFeedAct)tabAct.getCurrentActivity();
-						//act.newsFeeds = new ArrayList<NewsFeed>(TabMain.getNewsFeeds());
-						//act.lastFeedId = TabMain.getLastFeedId();
-						act.fillGUI();
-					}*/
-				}
-				else if(result.contains("updaterate")) {
-					
-					/*if(getTabHost().getCurrentTabTag().equals(TAB_RATE_TAG)) {
-						TabRate tabAct = (TabRate)getLocalActivityManager().getCurrentActivity();
-						RateAct act = (RateAct)tabAct.getCurrentActivity();
-						act.fillGUI();
-					}*/
-				}
-				else if(result.contains("getjourneys")) {
-					/*if(getTabHost().getCurrentTabTag().equals(TAB_JOURNEY_TAG)) {
-						TabPlanJourney tabAct = (TabPlanJourney)getLocalActivityManager().getCurrentActivity();
-						PlanJourney act = (PlanJourney)tabAct.getCurrentActivity();
-						act.showAlert();
-					}*/					
-				}					
+								
 	      }
 	}
 	
@@ -572,7 +623,20 @@ public class MainNavActivity extends FragmentActivity implements LocationListene
 		@Override
 		public void onLocationChanged(Location location) {
 			// TODO Auto-generated method stub
-			
+			if(lastLocation == null) {
+				lastLocation = location;
+				SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
+				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+				return;
+			}
+			else if(isBetterLocation(location, lastLocation)) {
+				lastLocation = location;
+				SharedPreferences pref = getSharedPreferences(CasApp.PREFS_NAME,MODE_PRIVATE);
+				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+				return;			
+			}
 		}
 
 		@Override

@@ -13,6 +13,10 @@ import data.objects.JourneyPath;
 import data.objects.NewsFeed;
 import data.objects.Stop;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -67,6 +71,8 @@ public class FeedFragment extends Fragment{
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        view = inflater.inflate(R.layout.feed_fragment, container, false);
 	        
+	        final SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+	        
 	        final RadioButton viewFeed = (RadioButton) view.findViewById(R.id.viewFeed);
 	        final RadioButton selectFeed = (RadioButton) view.findViewById(R.id.selectFeed);
 	        final RadioButton receiveFeed = (RadioButton) view.findViewById(R.id.receiveFeed);
@@ -84,6 +90,7 @@ public class FeedFragment extends Fragment{
 	        final LinearLayout addFeedGpsFrame = (LinearLayout) view.findViewById(R.id.gpsResultsFrame);
 	        final LinearLayout addFeedManuallyFrame = (LinearLayout) view.findViewById(R.id.AddFeedManuallyFrame);
 	        final LinearLayout feedResultsFrame = (LinearLayout) view.findViewById(R.id.FeedResultsFrame);
+	        
 	        
 	        //Origin Stop
 	        final AutoCompleteTextView originTextView = (AutoCompleteTextView) view.findViewById(R.id.addFeedManualOrigin);
@@ -147,10 +154,6 @@ public class FeedFragment extends Fragment{
 	        final Button addManualFeed = (Button) view.findViewById(R.id.ManualAddFeed);
 	        
 	        
-	        viewFeed.setChecked(true);
-	        selectFeed.setChecked(false);
-	        receiveFeed.setChecked(false);
-	        
 	        if(MainNavActivity.getNumFeeds() == 0){
 	        	addFeedManuallyFrame.setVisibility(View.GONE);
 				addFeedGpsFrame.setVisibility(View.GONE);
@@ -166,6 +169,8 @@ public class FeedFragment extends Fragment{
 				addFeedGpsFrame.setVisibility(View.GONE);
 	        	noFeedsSelected.setVisibility(View.GONE);
 	        	feedFrame.setVisibility(View.VISIBLE);
+	        	Log.d("list size after frag", String.valueOf(MainNavActivity.feed.size()));
+	        	feedAdapter.updateList(MainNavActivity.feed);
 				selectFeedFrame.setVisibility(View.GONE);
 		        receiveFeedFrame.setVisibility(View.GONE);
 		        feedResultsFrame.setVisibility(View.GONE);
@@ -263,12 +268,112 @@ public class FeedFragment extends Fragment{
 				
 				@Override
 				public void onClick(View v) {
-					addFeedGpsFrame.setVisibility(View.VISIBLE);
+					//addFeedGpsFrame.setVisibility(View.VISIBLE);
+					feedResultsFrame.setVisibility(View.VISIBLE);
 					addFeedManuallyFrame.setVisibility(View.GONE);
 					feedFrame.setVisibility(View.GONE);
 					selectFeedFrame.setVisibility(View.GONE);
 			        receiveFeedFrame.setVisibility(View.GONE);
 			        noFeedsSelected.setVisibility(View.GONE);
+			        
+			        
+			        String typeStr = "1";
+			        String uriPlanJourney = "";
+			        String latitude = "";
+			        String longitude = "";
+			        
+			        MainNavActivity.locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+			        MainNavActivity.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MainNavActivity.GPS_MIN_TIME, MainNavActivity.GPS_MIN_DISTANCE, new LocationListener() {
+						
+			        	@Override
+			    		public void onLocationChanged(Location location) {
+			    			// TODO Auto-generated method stub
+			    			if(MainNavActivity.lastLocation == null) {
+			    				MainNavActivity.lastLocation = location;
+			    				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+			    				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+			    				return;
+			    			}
+			    			else if(isBetterLocation(location, MainNavActivity.lastLocation)) {
+			    				MainNavActivity.lastLocation = location;
+			    				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+			    				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+			    				return;			
+			    			}
+			    		}
+
+			    		@Override
+			    		public void onStatusChanged(String provider, int status, Bundle extras) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+
+			    		@Override
+			    		public void onProviderEnabled(String provider) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+
+			    		@Override
+			    		public void onProviderDisabled(String provider) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+					});
+			        MainNavActivity.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MainNavActivity.GPS_MIN_TIME, MainNavActivity.GPS_MIN_DISTANCE, new LocationListener() {
+						
+			        	@Override
+			    		public void onLocationChanged(Location location) {
+			    			// TODO Auto-generated method stub
+			    			if(MainNavActivity.lastLocation == null) {
+			    				MainNavActivity.lastLocation = location;
+			    				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+			    				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+			    				return;
+			    			}
+			    			else if(isBetterLocation(location, MainNavActivity.lastLocation)) {
+			    				MainNavActivity.lastLocation = location;
+			    				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+			    				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+			    				return;			
+			    			}
+			    		}
+
+			    		@Override
+			    		public void onStatusChanged(String provider, int status, Bundle extras) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+
+			    		@Override
+			    		public void onProviderEnabled(String provider) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+
+			    		@Override
+			    		public void onProviderDisabled(String provider) {
+			    			// TODO Auto-generated method stub
+			    			
+			    		}
+					});
+			        
+			        latitude = pref.getString(CasApp.PREF_LATITUDE, "");
+			        longitude = pref.getString(CasApp.PREF_LONGITUDE, "");
+			        
+			        if(latitude != null && longitude != null){
+			        	 uriPlanJourney = "journey/line?latitude=" + latitude + "&longitude=" + longitude;
+					     Log.d("PLANJOURNEY", "pathsResults " + MainNavActivity.getFeedResults().size());
+			        	
+			        }else{
+			        	noFeedResultsFrame.setVisibility(View.VISIBLE);
+						feedResultsFrame.setVisibility(View.GONE);
+						return;
+			        }
+			        
+			        SearchFeedTask searchFeed = new SearchFeedTask();
+					searchFeed.execute(typeStr, uriPlanJourney);	
+			       
 			        return;
 				}
 			});
@@ -301,11 +406,13 @@ public class FeedFragment extends Fragment{
 	        
 	        addManualFeed.setOnClickListener(new OnClickListener() {
 	        	
+	        	boolean readyStart = false;
+	        	boolean readyEnd = false;
+	        	
+	        	
 				@Override
 				public void onClick(View v) {
 					if(originTextView.getText().toString().length() > 0 && destinationTextView.getText().toString().length() > 0 && originStopAdapter != null && destinationStopAdapter != null) {
-						boolean readyStart = false;
-						boolean readyEnd = false;
 						String originString = originTextView.getText().toString();
 						String destinationString = destinationTextView.getText().toString();
 						
@@ -336,20 +443,63 @@ public class FeedFragment extends Fragment{
 							readyEnd = true;
 						}
 						
-						if(readyStart == true && readyEnd == true) {
-							final String uriPlanJourney = "journey/search?origin=" + origin.getName().replace(" ", "%20") + "&destination=" + destination.getName().replace(" ", "%20");
-							
-							String typeStr = "0";
-							addFeedManuallyFrame.setVisibility(View.GONE);
-							feedResultsFrame.setVisibility(View.VISIBLE);
-							
-							SearchFeedTask searchFeed = new SearchFeedTask();
-							searchFeed.execute(typeStr, uriPlanJourney);	
-		            		Log.d("PLANJOURNEY", "pathsResults " + MainNavActivity.getFeedResults().size());
-		            		
-		            			
+						
+					}else if(originTextView.getText().toString().length() > 0 && originStopAdapter != null) {
+						String originString = originTextView.getText().toString();
+						
+						Stop st = new Stop();
+						st.setName(originString);
+						
+						if(originStopAdapter.getItem(st) == null && originStopAdapter.getCount() > 0) {
+							st = new Stop(originStopAdapter.getItem(0));
+							originTextView.setText(st.toString());
+							readyStart = true;
+						}
+						else if(originStopAdapter.getItem(st) != null) {
+							st = new Stop(originStopAdapter.getItem(st));
+							originTextView.setText(st.toString());
+							readyStart = true;
+						}
+					}else if(destinationTextView.getText().toString().length() > 0 && destinationStopAdapter != null) {
+						String destinationString = destinationTextView.getText().toString();
+						
+						Stop st = new Stop();
+						st.setName(destinationString);
+						
+						if(originStopAdapter.getItem(st) == null && destinationStopAdapter.getCount() > 0) {
+							st = new Stop(destinationStopAdapter.getItem(0));
+							destinationTextView.setText(st.toString());
+							readyEnd = true;
+						}
+						else if(destinationStopAdapter.getItem(st) != null) {
+							st = new Stop(destinationStopAdapter.getItem(st));
+							destinationTextView.setText(st.toString());
+							readyEnd = true;
 						}
 					}
+					
+					String uriPlanJourney = "";
+					String typeStr = "0";
+					
+					//ALTERAR
+					if(readyStart == true && readyEnd == true) {
+						uriPlanJourney = "journey/search?origin=" + originTextView.getText().toString().replace(" ", "%20") + "&destination=" + destinationTextView.getText().toString().replace(" ", "%20");	            			
+					}else if(readyStart == true){
+						uriPlanJourney = "journey/lines?stop=" + originTextView.getText().toString().replace(" ", "%20");
+					}else if(readyEnd == true){
+						uriPlanJourney = "journey/lines?stop=" + destinationTextView.getText().toString().replace(" ", "%20");
+					}else{
+						noFeedResultsFrame.setVisibility(View.VISIBLE);
+						addFeedManuallyFrame.setVisibility(View.GONE);
+						return;
+					}
+					
+					addFeedManuallyFrame.setVisibility(View.GONE);
+					feedResultsFrame.setVisibility(View.VISIBLE);
+					
+					SearchFeedTask searchFeed = new SearchFeedTask();
+					searchFeed.execute(typeStr, uriPlanJourney);	
+            		Log.d("PLANJOURNEY", "pathsResults " + MainNavActivity.getFeedResults().size());
 				}
 			});
 	        
@@ -470,6 +620,19 @@ public class FeedFragment extends Fragment{
 	    						Log.d("tamanho", String.valueOf(MainNavActivity.feedResults.size()));
 	    						
 	    						break;
+	    						
+	    					case 1:
+	    						String uriPlanJourneyGPS= params[1];
+	    						
+	    						MainNavActivity.setFeedResults((ArrayList<JourneyPath>) CasApp.doGet(getActivity(), uriPlanJourneyGPS, MainNavActivity.headers, new TypeToken<ArrayList<JourneyPath>>() {}.getType()));
+	    						ret = "ok planjourney";
+	    						for(JourneyPath j : MainNavActivity.feedResults){
+	    							Log.d("cenas", j.getOrigin().getName() + "-"+ j.getDestination().getName());
+	    						}
+	    						Log.d("tamanho", String.valueOf(MainNavActivity.feedResults.size()));
+	    						
+	    						break;
+	    						
 	    					/*case 1:
 	    						String uriGetJourneys = params[1];
 	    						TabMain.journeysPlanned = AndroidApp.doGet(PlanJourney.this, uriGetJourneys, headers, new TypeToken<ArrayList<JourneyPath>>() {}.getType());
@@ -565,8 +728,8 @@ public class FeedFragment extends Fragment{
 	    				switch(type) {
 	    					case 0:
 	    						String uriUpdateNewsFeed= params[1];
+	    						Log.d("tamanho antes", String.valueOf(MainNavActivity.feed.size()));
 	    						ArrayList<NewsFeed> t = CasApp.doGet(getActivity(), uriUpdateNewsFeed, MainNavActivity.headers, new TypeToken<ArrayList<NewsFeed>>() {}.getType());
-	    						size--;
 	    						if(MainNavActivity.getlastWriteFeedId() != 0 || MainNavActivity.getlastCategorisedFeedId() != 0)
 	    							MainNavActivity.addNewsFeeds(t);
 	    						else 
@@ -601,6 +764,7 @@ public class FeedFragment extends Fragment{
 						Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
 					}
 					else if(result.contains("updatenewsfeed")) {
+						size--;
 						Log.d("NEWSFEED", "UPLOADDATA POSTEXECUTE - updatenewsfeed is empty? " + MainNavActivity.feed.isEmpty() + " " + size);
 						Log.d("tamanho 2", String.valueOf(MainNavActivity.feed.size()));
 						if(size == 0){
@@ -647,7 +811,60 @@ public class FeedFragment extends Fragment{
 					&& conMgr.getActiveNetworkInfo().isConnected())
 				return true;
 			else return false;
-		}		
+		}
+		
+		protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+		    if (currentBestLocation == null) {
+		        // A new location is always better than no location
+		        return true;
+		    }
+
+		    // Check whether the new location fix is newer or older
+		    long timeDelta = location.getTime() - currentBestLocation.getTime();
+		    boolean isSignificantlyNewer = timeDelta > MainNavActivity.TWO_MINUTES;
+		    boolean isSignificantlyOlder = timeDelta < - MainNavActivity.TWO_MINUTES;
+		    boolean isNewer = timeDelta > 0;
+
+		    // If it's been more than two minutes since the current location, use the new location
+		    // because the user has likely moved
+		    if (isSignificantlyNewer) {
+		        return true;
+		    // If the new location is more than two minutes older, it must be worse
+		    } else if (isSignificantlyOlder) {
+		        return false;
+		    }
+
+		    // Check whether the new location fix is more or less accurate
+		    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+		    boolean isLessAccurate = accuracyDelta > 0;
+		    boolean isMoreAccurate = accuracyDelta < 0;
+		    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+		    // Check if the old and new location are from the same provider
+		    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+		            currentBestLocation.getProvider());
+
+		    // Determine location quality using a combination of timeliness and accuracy
+		    if (isMoreAccurate) {
+		        return true;
+		    } else if (isNewer && !isLessAccurate) {
+		        return true;
+		    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+		        return true;
+		    }
+		    return false;
+		}
+		
+		/** Checks whether two providers are the same */
+		private boolean isSameProvider(String provider1, String provider2) {
+		    if (provider1 == null) {
+		      return provider2 == null;
+		    }
+		    return provider1.equals(provider2);
+		}
+	    
+	    
+		
 		
 		
 }

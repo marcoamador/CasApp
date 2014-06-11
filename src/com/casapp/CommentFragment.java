@@ -15,6 +15,8 @@ import data.objects.Stop;
 import data.objects.TemplateComment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.webkit.WebStorage.Origin;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
@@ -36,7 +39,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CommentFragment extends Fragment{
+public class CommentFragment extends Fragment implements LocationListener{
 	
 		ListView checkInResultList;
 		CheckInResultsAdapter checkInResultAdapter;
@@ -72,6 +75,8 @@ public class CommentFragment extends Fragment{
 	    	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 	        latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
 	        longitude = pref.getString(CasApp.PREF_LONGITUDE, "0.0");
+	        checkInOrigin = pref.getString(CasApp.PREF_CHECKIN_ORIGIN, "");
+	        checkInDestination = pref.getString(CasApp.PREF_CHECKIN_DESTINATION, "");
 	        
 	        
 	        view = inflater.inflate(R.layout.comment_fragment, container, false);
@@ -175,7 +180,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] noise_array = getResources().getStringArray(R.array.noise_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, noise_array.length, noiseSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Noise.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -214,7 +219,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] crowding_array = getResources().getStringArray(R.array.crowding_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, crowding_array.length, crowdingSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Crowding.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -252,7 +257,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] seating_array = getResources().getStringArray(R.array.seating_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, seating_array.length, seatingSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Seating.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -291,7 +296,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] clean_array = getResources().getStringArray(R.array.cleanliness_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, clean_array.length, cleanSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Cleanliness.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -329,7 +334,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] scenery_array = getResources().getStringArray(R.array.scenery_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, scenery_array.length, scenerySlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Scenery.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -367,7 +372,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] security_array = getResources().getStringArray(R.array.perceived_security_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, security_array.length, securitySlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Perceived_Security.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -428,7 +433,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] speed_array = getResources().getStringArray(R.array.speed_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, speed_array.length, speedSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Speed.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -466,7 +471,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] progress_array = getResources().getStringArray(R.array.progress_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, progress_array.length, progressSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Progress.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -502,7 +507,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] similar_array = getResources().getStringArray(R.array.similar_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, similar_array.length, similarSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Similar.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -567,7 +572,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] courtesy_array = getResources().getStringArray(R.array.courtesy_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, courtesy_array.length, courtesySlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Courtesy.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -603,7 +608,7 @@ public class CommentFragment extends Fragment{
 			            	commentCat.setDate();
 			            	String[] smoothness_array = getResources().getStringArray(R.array.smoothness_array);
 			            	commentCat.setDiscreteClassification(CommentCategorised.calculateDiscreteClassification(commentProgress, smoothness_array.length, smoothnessSlider.getMax()));
-			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Temperature.ordinal() + 1);
+			            	commentCat.setIdTypeCategorisedComment(TemplateComment.Smoothness.ordinal() + 1);
 			            	
 			            	SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
 			                latitude = pref.getString(CasApp.PREF_LATITUDE, "0.0");
@@ -963,6 +968,8 @@ public class CommentFragment extends Fragment{
 	    		else if(result.contains("checkin")) {
 					SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME, Context.MODE_PRIVATE);
 					pref.edit().putBoolean(CasApp.PREF_CHECKIN, true).commit();
+					pref.edit().putString(CasApp.PREF_CHECKIN_ORIGIN, checkInOrigin).commit();
+					pref.edit().putString(CasApp.PREF_CHECKIN_DESTINATION, checkInDestination).commit();
 					MainNavActivity.setCheckedIn(true);
 					
 					LinearLayout linlaHeaderProgress = (LinearLayout) view.findViewById(R.id.linlaHeaderProgressCheckIn);
@@ -979,6 +986,12 @@ public class CommentFragment extends Fragment{
 					commentDestination.setText(checkInDestination);
 					
 					commentMenu.setVisibility(View.VISIBLE);
+					
+					getActivity().invalidateOptionsMenu();
+					/*Intent intent = new Intent(getActivity(),MainNavActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  
+					startActivity(intent);
+					getActivity().finish();*/
 				}
 	    	}
 	    }	
@@ -1068,10 +1081,95 @@ public class CommentFragment extends Fragment{
 					   Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
 				   }
 		      }
-		}	    
+		}	
+		
+		protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+		    if (currentBestLocation == null) {
+		        // A new location is always better than no location
+		        return true;
+		    }
+
+		    // Check whether the new location fix is newer or older
+		    long timeDelta = location.getTime() - currentBestLocation.getTime();
+		    boolean isSignificantlyNewer = timeDelta > MainNavActivity.TWO_MINUTES;
+		    boolean isSignificantlyOlder = timeDelta < - MainNavActivity.TWO_MINUTES;
+		    boolean isNewer = timeDelta > 0;
+
+		    // If it's been more than two minutes since the current location, use the new location
+		    // because the user has likely moved
+		    if (isSignificantlyNewer) {
+		        return true;
+		    // If the new location is more than two minutes older, it must be worse
+		    } else if (isSignificantlyOlder) {
+		        return false;
+		    }
+
+		    // Check whether the new location fix is more or less accurate
+		    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+		    boolean isLessAccurate = accuracyDelta > 0;
+		    boolean isMoreAccurate = accuracyDelta < 0;
+		    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+		    // Check if the old and new location are from the same provider
+		    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+		            currentBestLocation.getProvider());
+
+		    // Determine location quality using a combination of timeliness and accuracy
+		    if (isMoreAccurate) {
+		        return true;
+		    } else if (isNewer && !isLessAccurate) {
+		        return true;
+		    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+		        return true;
+		    }
+		    return false;
+		}
+		
+		/** Checks whether two providers are the same */
+		private boolean isSameProvider(String provider1, String provider2) {
+		    if (provider1 == null) {
+		      return provider2 == null;
+		    }
+		    return provider1.equals(provider2);
+		}
 	    
 	    
-	    
+		@Override
+		public void onLocationChanged(Location location) {
+			// TODO Auto-generated method stub
+			if(MainNavActivity.lastLocation == null) {
+				MainNavActivity.lastLocation = location;
+				SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+				return;
+			}
+			else if(isBetterLocation(location, MainNavActivity.lastLocation)) {
+				MainNavActivity.lastLocation = location;
+				SharedPreferences pref = getActivity().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+				pref.edit().putString(CasApp.PREF_LATITUDE, Double.toString(location.getLatitude())).
+				putString(CasApp.PREF_LONGITUDE, Double.toString(location.getLongitude())).commit();	
+				return;			
+			}
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+			
+		}
 	    
 	    
 	    

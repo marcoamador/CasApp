@@ -6,15 +6,18 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import data.objects.NewsFeed;
 
 public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
-	private List<NewsFeed> newsFeedsObjects = new ArrayList<NewsFeed>();
+	private List<NewsFeed> newsFeedsObjects;
 	private SimpleDateFormat hourMinutesFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	
 	public NewsFeedAdapter(Context context, int textViewResourceId, List<NewsFeed> objects) {
@@ -41,6 +44,24 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
 			convertView = inflater.inflate(R.layout.feed_item, null);
 		}
+		
+		SharedPreferences pref = getContext().getSharedPreferences(CasApp.PREFS_NAME,Context.MODE_PRIVATE);
+		String username = pref.getString(CasApp.PREF_USERNAME, "");
+		if(newsFeedsObjects.get(position).getUser().getUsername().equals(username)){
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			convertView = inflater.inflate(R.layout.my_feed_item, null);
+		}else{
+			Button likeButton = (Button) convertView.findViewById(R.id.feedItemLikeComment);
+			Button dislikeButton = (Button) convertView.findViewById(R.id.feedItemDislikeComment);
+			
+			if(!MainNavActivity.isLoggedin()){
+				likeButton.setVisibility(View.GONE);
+				dislikeButton.setVisibility(View.GONE);
+			}
+		}
+		
+		
+		
 		//Log.d("getView", "p" + position);
 		TextView user = (TextView) convertView.findViewById(R.id.userName);
 		user.setText(newsFeedsObjects.get(position).getUser().getUsername());
@@ -48,9 +69,8 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 		TextView origin = (TextView) convertView.findViewById(R.id.feedItemOrigin);
 		TextView destination = (TextView) convertView.findViewById(R.id.feedItemDestination);
 		TextView separator = (TextView) convertView.findViewById(R.id.separator2);
-		separator.setText("");
-		origin.setText(newsFeedsObjects.get(position).getLine().getLineName());
-		destination.setText("");
+		origin.setText("Line");
+		destination.setText(newsFeedsObjects.get(position).getLine().getLineName());
 		
 		TextView hour = (TextView) convertView.findViewById(R.id.feedItemTime);
 		
@@ -124,11 +144,12 @@ public class NewsFeedAdapter extends ArrayAdapter<NewsFeed> {
 		super.insert(object, index);
 	}
 
-	public void updateList(ArrayList<NewsFeed> objects) {
+	public void updateList(List<NewsFeed> objects) {
+		Log.d("avisou", String.valueOf(objects.size()));
 		newsFeedsObjects.clear();
-		newsFeedsObjects.addAll(objects);
+	    newsFeedsObjects.addAll(objects);
 		notifyDataSetChanged();
-		//Log.d("avisou", String.valueOf(newsFeedsObjects.size()));
+		Log.d("avisou", String.valueOf(newsFeedsObjects.size()));
 
 	}
 

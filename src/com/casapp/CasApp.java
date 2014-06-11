@@ -43,6 +43,8 @@ public class CasApp extends Application{
 	public static final String PREF_PASSWORD = "password";
 	public static final String PREF_DATELOGIN = "dateLogin";	
 	public static final String PREF_CHECKIN = "checkin";
+	public static final String PREF_CHECKIN_ORIGIN = "origin";
+	public static final String PREF_CHECKIN_DESTINATION = "destination";
 	public static final String PREF_AUTHTOKEN = "authToken";
 	public static final String PREF_LATITUDE = "latitude";
 	public static final String PREF_LONGITUDE = "longitude";

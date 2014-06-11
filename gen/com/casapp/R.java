@@ -720,11 +720,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int feed_fragment=0x7f03000a;
         public static final int feed_item=0x7f03000b;
         public static final int fragment_main_nav=0x7f03000c;
-        public static final int profile_fragment=0x7f03000d;
-        public static final int profile_not_logged=0x7f03000e;
-        public static final int schedule_list_item=0x7f03000f;
-        public static final int trips_fragment=0x7f030010;
-        public static final int vehicle_dialog=0x7f030011;
+        public static final int my_feed_item=0x7f03000d;
+        public static final int profile_fragment=0x7f03000e;
+        public static final int profile_not_logged=0x7f03000f;
+        public static final int schedule_list_item=0x7f030010;
+        public static final int trips_fragment=0x7f030011;
+        public static final int vehicle_dialog=0x7f030012;
     }
     public static final class menu {
         public static final int feed=0x7f0c0000;
@@ -898,7 +899,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int trips_favourites=0x7f0a0065;
         public static final int trips_schedule=0x7f0a0066;
-        /**  <string name="urixml">http://10.13.37.86/Service.svc/</string> 
+        /**   <string name="urixml">http://10.13.37.86/Service.svc/</string> 
          */
         public static final int urixml=0x7f0a0000;
         public static final int user_statistics=0x7f0a0082;
